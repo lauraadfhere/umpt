@@ -38,6 +38,8 @@
   },
   "nav": {
     "label": "الرئيسية",
+    "menuOpen": "فتح القائمة",
+    "menuClose": "إغلاق القائمة",
     "journals": "الدوريات",
     "blogs": "المدونات",
     "proceedings": "المشاريع والبحث",
@@ -530,7 +532,8 @@
       "replyPlaceholder": "Write a reply…",
       "sendReply": "Send reply",
       "cancel": "Cancel",
-      "replyError": "Unable to save the reply."
+      "replyError": "Unable to save the reply.",
+      "inReplyTo": "ردًا على {name}"
     },
     "reviews": {
       "title": "Book reviews",

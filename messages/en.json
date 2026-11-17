@@ -38,6 +38,8 @@
   },
   "nav": {
     "label": "Main",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu",
     "journals": "Journals",
     "blogs": "Blogs",
     "proceedings": "Projects & Research",
@@ -559,7 +561,8 @@
       "replyPlaceholder": "Write a reply…",
       "sendReply": "Send reply",
       "cancel": "Cancel",
-      "replyError": "Unable to save the reply."
+      "replyError": "Unable to save the reply.",
+      "inReplyTo": "In reply to {name}"
     },
     "reviews": {
       "title": "Book reviews",

@@ -228,7 +228,6 @@ export async function createCommentReply(parentId: string, message: string, auth
   const parentResponse = await fetch(`${url}/classes/${COMMENT_CLASS}/${parentId}`, { headers: writeHeaders(), cache: "no-store" });
   const parent = (await parentResponse.json().catch(() => ({}))) as ParseRecord & { error?: string };
   if (!parentResponse.ok || !parent.objectId) throw new Error(parent.error || "That comment no longer exists.");
-  if (parent.isReply === true) throw new Error("Replies can only be added to top-level comments.");
   if (parent.isApproved !== true) throw new Error("Approve the comment before replying to it.");
 
   const response = await fetch(`${url}/classes/${COMMENT_CLASS}`, {

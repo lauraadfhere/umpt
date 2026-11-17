@@ -35,6 +35,7 @@ export default async function DashboardCommentsPage({ params, searchParams }: Pr
 
   const pending = comments.filter((comment) => !comment.isApproved).length;
   const visible = comments.filter((comment) => (filter === "pending" ? !comment.isApproved : filter === "approved" ? comment.isApproved : true));
+  const namesById = new Map(comments.map((item) => [item.id, item.name]));
   const filters = [
     { key: "pending", label: t("pending") },
     { key: "approved", label: t("approved") },
@@ -79,6 +80,12 @@ export default async function DashboardCommentsPage({ params, searchParams }: Pr
                   </p>
                   <p className="mt-0.5 text-[12px] text-muted">
                     {formatDate(comment.createdAt, locale) || "—"}
+                    {comment.parentId && namesById.has(comment.parentId) ? (
+                      <>
+                        {" · "}
+                        <span>{t("inReplyTo", { name: namesById.get(comment.parentId)! })}</span>
+                      </>
+                    ) : null}
                     {comment.slug ? (
                       <>
                         {" · "}
@@ -96,7 +103,7 @@ export default async function DashboardCommentsPage({ params, searchParams }: Pr
               <p className="whitespace-pre-wrap px-5 py-4 text-[14px] leading-6 text-text">{comment.message.replace(/<[^>]*>/g, " ")}</p>
               <div className="flex flex-wrap items-center gap-4 border-t border-rule px-5 py-2.5">
                 <CommentActions id={comment.id} isApproved={comment.isApproved} author={comment.name} />
-                {comment.isApproved && !comment.isReply ? <CommentReply id={comment.id} /> : null}
+                {comment.isApproved ? <CommentReply id={comment.id} /> : null}
               </div>
             </article>
           ))}

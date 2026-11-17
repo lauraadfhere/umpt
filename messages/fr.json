@@ -38,6 +38,8 @@
   },
   "nav": {
     "label": "Principal",
+    "menuOpen": "Ouvrir le menu",
+    "menuClose": "Fermer le menu",
     "journals": "Revues",
     "blogs": "Blogs",
     "proceedings": "Projets et recherche",
@@ -530,7 +532,8 @@
       "replyPlaceholder": "Écrire une réponse…",
       "sendReply": "Envoyer la réponse",
       "cancel": "Annuler",
-      "replyError": "Impossible d'enregistrer la réponse."
+      "replyError": "Impossible d'enregistrer la réponse.",
+      "inReplyTo": "En réponse à {name}"
     },
     "reviews": {
       "title": "Avis sur les livres",

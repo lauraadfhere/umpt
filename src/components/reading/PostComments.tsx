@@ -1,11 +1,15 @@
 "use client";
 
-import { FormEvent, useCallback, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { formatDate } from "@/lib/format";
 import { namesMatch } from "@/lib/profile-config";
+import { indexCommentsByParent } from "@/lib/comment-thread";
+import { richTextToPlain, parseRichText } from "@/lib/richtext";
 import { AuthorAvatar } from "@/components/ui/AuthorAvatar";
 import { SectionTitle } from "@/components/ui/SectionTitle";
+import { CommentMessageBody } from "@/components/reading/CommentMessageBody";
+import { CompactRichTextEditor } from "@/components/reading/CompactRichTextEditor";
 
 type Comment = {
   id: string;
@@ -20,12 +24,103 @@ type Comment = {
 
 type ReaderSession = { email: string; displayName: string };
 
-function plainMessage(html: string) {
-  return html.replace(/<[^>]*>/g, " ").replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim();
+function messageText(html: string) {
+  const trimmed = html.trim();
+  if (!trimmed) return "";
+  return richTextToPlain(parseRichText(trimmed)) || trimmed.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 }
 
 function voteKey(id: string) {
   return `umpt-voted-${id}`;
+}
+
+function CommentReplyBlock({
+  comment,
+  depth,
+  avatarFor,
+  votedIds,
+  hydrated,
+  onVote,
+  t,
+  locale,
+  descendants,
+}: {
+  comment: Comment;
+  depth: number;
+  avatarFor: (comment: Comment) => string | null;
+  votedIds: Set<string>;
+  hydrated: boolean;
+  onVote: (id: string, direction: "like" | "dislike") => void;
+  t: ReturnType<typeof useTranslations>;
+  locale: string;
+  descendants: (id: string) => Comment[];
+}) {
+  const voted = hydrated && votedIds.has(comment.id);
+  const nested = descendants(comment.id);
+  const isNested = depth > 0;
+
+  return (
+    <div className={isNested ? "mt-3 border-s-4 border-accent bg-panel px-3 py-3 sm:px-4" : ""} style={isNested ? { marginInlineStart: `${Math.min(depth, 4) * 0.75}rem` } : undefined}>
+      <div className="flex gap-3">
+        <AuthorAvatar name={comment.name} src={avatarFor(comment)} className={isNested ? "size-8" : "size-10"} useDefault />
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+            <p className="text-[14px] font-semibold text-text sm:text-[14px]">{comment.name}</p>
+            {isNested ? (
+              <span className="text-[11px] font-semibold tracking-wide text-muted uppercase">{t("replyBadge")}</span>
+            ) : null}
+            {comment.createdAt && (
+              <time dateTime={comment.createdAt} className="text-[12px] text-muted">
+                {formatDate(comment.createdAt, locale)}
+              </time>
+            )}
+          </div>
+          <CommentMessageBody
+            html={comment.message}
+            plainClassName="mt-2 break-words text-[18px] text-text sm:text-[15px]"
+          />
+          {!isNested ? (
+            <div className="mt-3 flex flex-wrap items-center gap-2 text-[13px] sm:gap-3">
+              <button
+                type="button"
+                disabled={voted}
+                onClick={() => void onVote(comment.id, "like")}
+                className="inline-flex min-h-11 min-w-11 touch-manipulation items-center justify-center gap-1.5 rounded-sm px-2 text-muted hover:text-link disabled:opacity-50"
+                aria-label={t("like")}
+              >
+                <span aria-hidden>▲</span>
+                <span>{comment.likes}</span>
+              </button>
+              <button
+                type="button"
+                disabled={voted}
+                onClick={() => void onVote(comment.id, "dislike")}
+                className="inline-flex min-h-11 min-w-11 touch-manipulation items-center justify-center gap-1.5 rounded-sm px-2 text-muted hover:text-new disabled:opacity-50"
+                aria-label={t("dislike")}
+              >
+                <span aria-hidden>▼</span>
+                <span>{comment.dislikes}</span>
+              </button>
+            </div>
+          ) : null}
+        </div>
+      </div>
+      {nested.map((child) => (
+        <CommentReplyBlock
+          key={child.id}
+          comment={child}
+          depth={depth + 1}
+          avatarFor={avatarFor}
+          votedIds={votedIds}
+          hydrated={hydrated}
+          onVote={onVote}
+          t={t}
+          locale={locale}
+          descendants={descendants}
+        />
+      ))}
+    </div>
+  );
 }
 
 export function PostComments({
@@ -50,6 +145,8 @@ export function PostComments({
   const [signingIn, setSigningIn] = useState(false);
   const [votedIds, setVotedIds] = useState<Set<string>>(new Set());
   const [hydrated, setHydrated] = useState(false);
+
+  const { roots, descendants } = useMemo(() => indexCommentsByParent(comments), [comments]);
 
   const loadComments = useCallback(() => {
     return fetch(`/api/comments?slug=${encodeURIComponent(slug)}&postId=${encodeURIComponent(postId)}`)
@@ -119,7 +216,7 @@ export function PostComments({
 
   async function submitComment(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!message.trim() || submitting) return;
+    if (!messageText(message) || submitting) return;
     if (!reader && !email.trim()) {
       setStatus(t("emailRequired"));
       return;
@@ -184,9 +281,6 @@ export function PostComments({
     return null;
   };
 
-  const roots = comments.filter((comment) => !comment.parentId);
-  const repliesFor = (id: string) => comments.filter((comment) => comment.parentId === id);
-
   return (
     <section id="comments" aria-labelledby="comments-heading" className="mt-12 scroll-mt-6 border-t border-rule pt-9 max-w-full">
       <div className="flex items-center justify-between gap-3">
@@ -210,7 +304,7 @@ export function PostComments({
             onChange={(event) => setEmail(event.target.value)}
             autoComplete="email"
             placeholder={t("emailPlaceholder")}
-            className="w-full border border-rule bg-white px-3 py-2.5 text-base outline-none focus:border-link sm:text-[14px]"
+            className="w-full border border-rule bg-white px-3 py-2.5 text-[18px] outline-none focus:border-link sm:text-[14px]"
             required
           />
           <button type="submit" disabled={signingIn} className="mt-4 min-h-11 touch-manipulation bg-link px-4 py-2.5 text-[14px] font-semibold text-white hover:bg-link-hover disabled:opacity-60">
@@ -218,9 +312,7 @@ export function PostComments({
           </button>
         </form>
       ) : (
-        <p className="mt-4 text-[13px] text-muted">
-          {t("signedInAs", { email: reader.email })}
-        </p>
+        <p className="mt-4 text-[13px] text-muted">{t("signedInAs", { email: reader.email })}</p>
       )}
 
       <form onSubmit={submitComment} className="mt-6 border border-rule bg-panel px-5 py-5">
@@ -237,14 +329,14 @@ export function PostComments({
                 onChange={(event) => setName(event.target.value)}
                 maxLength={80}
                 autoComplete="name"
-                className="w-full border border-rule bg-white px-3 py-2.5 text-base outline-none focus:border-link sm:text-[14px]"
+                className="w-full border border-rule bg-white px-3 py-2.5 text-[18px] outline-none focus:border-link sm:text-[14px]"
               />
             </div>
             <div>
               <label htmlFor="comment-email-ro" className="mb-1 block text-[13px] font-semibold text-text">
                 {t("yourEmail")}
               </label>
-              <input id="comment-email-ro" value={reader.email} readOnly className="w-full border border-rule bg-[#f5f5f5] px-3 py-2.5 text-base text-muted sm:text-[14px]" />
+              <input id="comment-email-ro" value={reader.email} readOnly className="w-full border border-rule bg-[#f5f5f5] px-3 py-2.5 text-[18px] text-muted sm:text-[14px]" />
             </div>
           </div>
         ) : (
@@ -258,27 +350,27 @@ export function PostComments({
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               autoComplete="email"
-              className="w-full border border-rule bg-white px-3 py-2.5 text-base outline-none focus:border-link sm:text-[14px]"
+              className="w-full border border-rule bg-white px-3 py-2.5 text-[18px] outline-none focus:border-link sm:text-[14px]"
               required
             />
           </>
         )}
-        <label htmlFor="comment-message" className="mt-4 mb-1 block text-[13px] font-semibold text-text">
-          {t("yourComment")}
-        </label>
-        <textarea
-          id="comment-message"
-          value={message}
-          onChange={(event) => setMessage(event.target.value)}
-          rows={5}
-          maxLength={2000}
-          placeholder={t("commentPlaceholder")}
-          className="w-full border border-rule bg-white px-3 py-2.5 text-base outline-none focus:border-link sm:text-[14px]"
-          required
-        />
+        <div className="mt-4">
+          <CompactRichTextEditor
+            id="comment-message"
+            label={t("yourComment")}
+            placeholder={t("commentPlaceholder")}
+            value={message}
+            onChange={setMessage}
+          />
+        </div>
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
           <p className="text-[12px] text-muted">{t("reviewed")}</p>
-          <button type="submit" disabled={submitting} className="min-h-11 touch-manipulation bg-link px-4 py-2.5 text-[14px] font-semibold text-white hover:bg-link-hover disabled:opacity-60">
+          <button
+            type="submit"
+            disabled={submitting || !messageText(message)}
+            className="min-h-11 touch-manipulation bg-link px-4 py-2.5 text-[14px] font-semibold text-white hover:bg-link-hover disabled:opacity-60"
+          >
             {submitting ? t("sending") : t("submit")}
           </button>
         </div>
@@ -294,66 +386,25 @@ export function PostComments({
           {t("loading")}
         </p>
       )}
-      {!loading && roots.length === 0 && (
-        <p className="mt-6 text-[14px] text-muted">{t("empty")}</p>
-      )}
+      {!loading && roots.length === 0 && <p className="mt-6 text-[14px] text-muted">{t("empty")}</p>}
 
       {roots.length > 0 && (
         <ul className="mt-8 space-y-4">
-          {roots.map((comment) => {
-            const voted = hydrated && votedIds.has(comment.id);
-            return (
-              <li key={comment.id} className="border border-rule bg-white px-3 py-4 sm:px-4">
-                <div className="flex gap-3">
-                  <AuthorAvatar name={comment.name} src={avatarFor(comment)} className="size-10" useDefault />
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                      <p className="text-[14px] font-semibold text-text">{comment.name}</p>
-                      {comment.createdAt && <time dateTime={comment.createdAt} className="text-[12px] text-muted">{formatDate(comment.createdAt, locale)}</time>}
-                    </div>
-                    <p className="mt-2 break-words text-[15px] leading-[1.55] text-text">{plainMessage(comment.message)}</p>
-                    <div className="mt-3 flex flex-wrap items-center gap-2 text-[13px] sm:gap-3">
-                      <button
-                        type="button"
-                        disabled={voted}
-                        onClick={() => void vote(comment.id, "like")}
-                        className="inline-flex min-h-11 min-w-11 touch-manipulation items-center justify-center gap-1.5 rounded-sm px-2 text-muted hover:text-link disabled:opacity-50"
-                        aria-label={t("like")}
-                      >
-                        <span aria-hidden>▲</span>
-                        <span>{comment.likes}</span>
-                      </button>
-                      <button
-                        type="button"
-                        disabled={voted}
-                        onClick={() => void vote(comment.id, "dislike")}
-                        className="inline-flex min-h-11 min-w-11 touch-manipulation items-center justify-center gap-1.5 rounded-sm px-2 text-muted hover:text-new disabled:opacity-50"
-                        aria-label={t("dislike")}
-                      >
-                        <span aria-hidden>▼</span>
-                        <span>{comment.dislikes}</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                {repliesFor(comment.id).map((reply) => (
-                  <div key={reply.id} className="mt-4 ms-6 border-s-4 border-accent bg-panel px-4 py-3">
-                    <div className="flex gap-3">
-                      <AuthorAvatar name={reply.name} src={avatarFor(reply)} className="size-8" useDefault />
-                      <div className="min-w-0 flex-1">
-                        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                          <p className="text-[14px] font-semibold text-text">{reply.name}</p>
-                          <span className="text-[11px] font-semibold tracking-wide text-muted uppercase">{t("replyBadge")}</span>
-                          {reply.createdAt && <time dateTime={reply.createdAt} className="text-[12px] text-muted">{formatDate(reply.createdAt, locale)}</time>}
-                        </div>
-                        <p className="mt-2 text-[15px] leading-[1.55] text-text">{plainMessage(reply.message)}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </li>
-            );
-          })}
+          {roots.map((comment) => (
+            <li key={comment.id} className="border border-rule bg-white px-3 py-4 sm:px-4">
+              <CommentReplyBlock
+                comment={comment}
+                depth={0}
+                avatarFor={avatarFor}
+                votedIds={votedIds}
+                hydrated={hydrated}
+                onVote={vote}
+                t={t}
+                locale={locale}
+                descendants={descendants}
+              />
+            </li>
+          ))}
         </ul>
       )}
     </section>
