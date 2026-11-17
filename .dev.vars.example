@@ -1,2 +1,14 @@
-# Copy to .dev.vars for local Wrangler preview (never commit secrets).
+# Copy to .dev.vars for `yarn preview:worker` (never commit .dev.vars).
 NEXTJS_ENV=development
+
+# Same as production Worker secrets (Dashboard → Workers → umpt → Settings → Variables):
+# PARSE_SERVER_URL=
+# PARSE_APP_ID=
+# PARSE_REST_KEY=
+# PARSE_MASTER_KEY=
+# ADMIN_EMAIL=
+# ADMIN_PASSWORD=
+# ADMIN_SESSION_SECRET=
+# NEXT_PUBLIC_SITE_URL=
+# NEXT_PUBLIC_CONTACT_EMAIL=
+# READER_SESSION_SECRET=  (optional; falls back to ADMIN_SESSION_SECRET)

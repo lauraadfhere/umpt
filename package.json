@@ -2,9 +2,9 @@
   "name": "umpt-platform",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "yarn@4.18.1",
   "engines": {
-    "yarn": ">=1.22.0 <2",
-    "node": ">=20"
+    "node": ">=20 <=22"
   },
   "scripts": {
     "dev": "next dev --webpack",
@@ -13,7 +13,9 @@
     "lint": "eslint",
     "build:worker": "opennextjs-cloudflare build",
     "preview:worker": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy:worker": "opennextjs-cloudflare build && opennextjs-cloudflare deploy"
+    "deploy:worker": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "cf:build": "opennextjs-cloudflare build",
+    "cf:deploy": "opennextjs-cloudflare build && wrangler deploy"
   },
   "dependencies": {
     "next": "16.4.6",
@@ -29,7 +31,6 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.6",
-    "lightningcss-win32-x64-msvc": "1.32.0",
     "tailwindcss": "^4",
     "typescript": "^5",
     "wrangler": "^4.86.0"
