@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-fira), var(--font-arabic), "Fira Sans", "Helvetica Neue", Arial, sans-serif;
+
+  --color-chrome: #000000;
+  --color-chrome-line: #2b2b2b;
+  --color-chrome-field: #4a4a4a;
+  --color-chrome-button: #5c5c5c;
+  --color-subnav: #333333;
+  --color-subnav-active: #4f4f4f;
+  --color-hero: #707070;
+  --color-hero-shape: #8a8a8a;
+
+  --color-panel: #f2f2f2;
+  --color-panel-head: #e8e8e8;
+  --color-rule: #d9d9d9;
+  --color-text: #333333;
+  --color-muted: #6b6b6b;
+
+  --color-link: #1a6fb0;
+  --color-link-hover: #0f4f82;
+  --color-new: #c8102e;
+  --color-feedback: #1b75bb;
+  --color-edition: #5fb236;
+  --color-upgrade-from: #c4122f;
+  --color-upgrade-to: #e8336d;
+  --color-register: #59626b;
+  --color-register-text: #b3d4f5;
+  --color-accent: #8f5fb3;
+  --color-reading-progress: #1a5276;
+  --color-rss: #c9461c;
+  --color-promo: #1c4a8a;
+  --color-promo-shape: #2a5fa8;
+  --color-promo-accent: #f08a24;
+  --color-footer-line: #444444;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: #ffffff;
+  color: var(--color-text);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: #cfe3f5;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-link);
+  outline-offset: 2px;
+}
+
+@keyframes loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loader-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.loader-spin {
+  transform-origin: 50% 50%;
+  animation: loader-spin 1s steps(10, end) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader-spin {
+    animation: loader-pulse 1.6s ease-in-out infinite;
+  }
+}
+
+[data-reading-theme="dark"] {
+  --color-text: #e6e6e6;
+  --color-muted: #a8a8a8;
+  --color-panel: #2c2c2c;
+  --color-panel-head: #363636;
+  --color-rule: #4a4a4a;
+  --color-link: #7eb8e8;
+  --color-link-hover: #a8d4ff;
+  --color-accent: #c4a0e0;
+  --color-reading-progress: #3d8ab8;
+  color: var(--color-text);
+}
+
+[data-reading-theme="dark"] .bg-white {
+  background-color: #2a2a2a !important;
+}
+
+[data-reading-theme="dark"] .bg-panel {
+  background-color: var(--color-panel) !important;
+}
+
+[data-reading-theme="dark"] .border-rule {
+  border-color: var(--color-rule);
+}
+
+[data-reading-theme="dark"] .text-\[\#222\] {
+  color: var(--color-text);
+}
+
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
