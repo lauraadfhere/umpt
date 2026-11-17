@@ -4,12 +4,14 @@
 
 | Field | Value |
 | --- | --- |
-| **Build command** | `yarn install --immutable && yarn build:worker` |
+| **Build command** | `yarn build:worker` |
 | **Deploy command** | `npx wrangler deploy` |
 
-If your UI only exposes **Deploy command**, use a single step:
+Cloudflare already runs `yarn install` (immutable) before the build command. Do **not** repeat `yarn install` in the build step.
 
-`yarn install --immutable && yarn cf:deploy`
+If your UI only exposes **Deploy command**, use:
+
+`yarn build:worker && npx wrangler deploy`
 
 ## Variables & secrets (Settings → Variables)
 
