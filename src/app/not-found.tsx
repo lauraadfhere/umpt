@@ -18,7 +18,7 @@ export default function RootNotFound() {
   return (
     <html lang={routing.defaultLocale}>
       <body className="flex min-h-screen flex-col antialiased">
-        <div className="flex min-h-[50px] items-center bg-chrome px-4 text-[13px] font-bold tracking-wide text-white uppercase">UMPT Digital Library</div>
+        <div className="flex min-h-[50px] items-center bg-chrome px-4 text-[13px] font-bold tracking-wide text-white uppercase">UMPT WORLD OF TOMORROW</div>
         <main className="mx-auto w-full max-w-[1200px] flex-1 px-6 py-16">
           <p className="text-[120px] leading-none font-light text-[#c9c9c9]" aria-hidden>
             404

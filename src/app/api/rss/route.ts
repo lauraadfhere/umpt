@@ -30,9 +30,9 @@ export async function GET(request: Request) {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
-    <title>UMPT Digital Library: recently loaded proceedings</title>
+    <title>UMPT WORLD OF TOMORROW: recently loaded proceedings</title>
     <link>${escapeXml(`${origin}/en/proceedings`)}</link>
-    <description>The newest proceedings added to the UMPT Digital Library.</description>
+    <description>The newest proceedings added to UMPT WORLD OF TOMORROW.</description>
 ${items}
   </channel>
 </rss>

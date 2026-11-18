@@ -11,7 +11,7 @@ export type ProfileSettings = {
 
 export const DEFAULT_PROFILE_SETTINGS: ProfileSettings = {
   displayName: "UMPT Editorial",
-  affiliation: "UMPT Digital Library",
+  affiliation: "UMPT WORLD OF TOMORROW",
   bio: "",
   avatarUrl: "",
   website: "",

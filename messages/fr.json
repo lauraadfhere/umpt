@@ -1,10 +1,10 @@
 {
   "meta": {
-    "title": "Bibliothèque numérique UMPT",
+    "title": "UMPT WORLD OF TOMORROW",
     "description": "Articles, actes, livres et profils d'auteurs de la communauté UMPT."
   },
   "brand": {
-    "home": "Accueil de la Bibliothèque numérique UMPT",
+    "home": "Accueil de la UMPT WORLD OF TOMORROW",
     "short": "UMPT",
     "digital": "Bibliothèque",
     "library": "numérique",
@@ -117,11 +117,11 @@
     }
   },
   "home": {
-    "heroTitle": "Bibliothèque numérique UMPT",
+    "heroTitle": "UMPT WORLD OF TOMORROW",
     "searchPlaceholder": "Rechercher actes, livres et personnes",
     "breadcrumb": "Accueil",
     "welcomeTitle": "Bienvenue",
-    "welcomeBody": "La Bibliothèque numérique UMPT réunit actes de conférences, livres et profils d'auteurs. Parcourez par titre, explorez l'index alphabétique ou trouvez les personnes derrière la recherche.",
+    "welcomeBody": "La UMPT WORLD OF TOMORROW réunit actes de conférences, livres et profils d'auteurs. Parcourez par titre, explorez l'index alphabétique ou trouvez les personnes derrière la recherche.",
     "browseProceedings": "Parcourir les actes",
     "browsePosts": "Lire les articles"
   },
@@ -169,7 +169,7 @@
     "readMore": "Lire la suite",
     "viewBook": "Voir le livre",
     "buyNow": "Acheter",
-    "metaDescription": "Les livres publiés dans la Bibliothèque numérique UMPT, avec auteurs, année et courte description.",
+    "metaDescription": "Les livres publiés dans la UMPT WORLD OF TOMORROW, avec auteurs, année et courte description.",
     "detail": {
       "by": "par",
       "format": "Format",
@@ -194,7 +194,7 @@
     "pageTitle": "Personnes",
     "intro1": "Des informaticiens, enseignants et praticiens de premier plan publient leurs travaux dans les actes, revues, magazines et livres UMPT. Découvrez la communauté des auteurs à travers leurs profils.",
     "intro2": "Auteurs : revendiquez votre profil, complétez-le avec vos coordonnées et vos réseaux, et développez vos liens.",
-    "metaDescription": "Trouvez les auteurs de la Bibliothèque numérique UMPT par nom ou par sujet."
+    "metaDescription": "Trouvez les auteurs de la UMPT WORLD OF TOMORROW par nom ou par sujet."
   },
   "subjects": {
     "title": "Sujets",
@@ -296,6 +296,9 @@
       "home": "Accueil",
       "homeBody": "Définissez l'illustration à droite du bloc Articles UMPT (Récents / Les plus vus) sur la page d'accueil.",
       "homeNote": "Accent articles",
+      "heroContext": "Contexte du bandeau",
+      "heroContextBody": "Arrière-plan, titre et encart sombre sous le menu principal.",
+      "heroContextNote": "Bandeau héros",
       "uploads": "Médias",
       "uploadsBody": "Téléversez des images vers Parse et copiez l'URL dans les couvertures ou le contenu.",
       "uploadsNote": "JPG, PNG, WebP, GIF"
@@ -314,6 +317,7 @@
       "editLogo": "Modifier le logo",
       "editFavicon": "Modifier le favicon",
       "editHome": "Modifier l'accueil",
+      "editHeroContext": "Modifier le bandeau",
       "uploadImages": "Envoyer des images",
       "openInbox": "Ouvrir la boîte"
     },
@@ -329,6 +333,8 @@
       "logo": "Logo",
       "favicon": "Favicon",
       "home": "Accueil",
+      "heroContext": "Contexte du bandeau",
+      "settings": "Paramètres",
       "uploads": "Médias",
       "books": "Livres",
       "projects": "Projets et recherche",
@@ -694,6 +700,53 @@
       "saved": "Favicon enregistré. Actualisation forcée (Ctrl+F5) peut être nécessaire dans l'onglet.",
       "saveError": "Impossible d'enregistrer le favicon."
     },
+    "heroContext": {
+      "title": "Contexte du bandeau",
+      "hint": "Contrôle la barre grise sous la navigation : motif géométrique ou mosaïque photo, titre facultatif et encart de contexte.",
+      "previewTitle": "Aperçu",
+      "previewDefaultTitle": "UMPT WORLD OF TOMORROW",
+      "previewSearchPlaceholder": "Rechercher projets, livres et personnes",
+      "titleTitle": "Titre du bandeau",
+      "titleOverride": "Remplacement du titre (facultatif)",
+      "titleOverridePlaceholder": "Laisser vide pour le titre de chaque page",
+      "titleOverrideHint": "Remplace le grand titre sur les pages publiques.",
+      "modeTitle": "Arrière-plan",
+      "modePattern": "Motif gris",
+      "modePatternHint": "Style low-poly intégré par défaut.",
+      "modeImage": "Image d'arrière-plan",
+      "modeImageHint": "Remplace le motif gris par votre propre image.",
+      "overlay": "Intensité du voile sombre",
+      "imageTitle": "Image du bandeau héros",
+      "noImage": "Aucune image — téléversez ou collez une URL",
+      "uploadImage": "Téléverser l'image de fond",
+      "imageUrl": "URL de l'image",
+      "uploadsHint": "Besoin d'une URL hébergée ? Téléversez d'abord dans Médias, puis collez le lien ici.",
+      "fitTitle": "Remplissage de l'image",
+      "fitCover": "Pleine largeur (cover)",
+      "fitCoverHint": "Une image couvre tout le bandeau (recommandé).",
+      "fitTile": "Mosaïque",
+      "fitTileHint": "Répétition en petites tuiles.",
+      "adjustTitle": "Réglages de l'image",
+      "adjustHint": "Ajustez luminosité, contraste et couleurs comme dans un éditeur photo.",
+      "brightness": "Luminosité",
+      "contrast": "Contraste",
+      "saturation": "Saturation",
+      "grayscale": "Niveau de gris",
+      "hue": "Teinte",
+      "blur": "Flou",
+      "resetAdjustments": "Réinitialiser les réglages",
+      "contextTitle": "Encart de contexte",
+      "showPanel": "Afficher l'encart sur le bandeau",
+      "showPanelHint": "Boîte sombre à côté du titre pour un court texte d'accueil.",
+      "contextBody": "Texte de l'encart",
+      "contextPlaceholder": "Message de bienvenue ou liens utiles…",
+      "panelOpacity": "Opacité de l'encart",
+      "uploading": "Téléversement…",
+      "saving": "Enregistrement…",
+      "save": "Enregistrer le bandeau",
+      "saved": "Contexte du bandeau enregistré.",
+      "saveError": "Impossible d'enregistrer le bandeau."
+    },
     "homePosts": {
       "title": "Accueil · accent Articles UMPT",
       "hint": "Contrôle la grande illustration à droite du bloc Articles UMPT (Récents et Les plus vus) sur la page d'accueil.",
@@ -769,7 +822,7 @@
     "rssLabel": "Flux RSS des ajouts récents"
   },
   "footer": {
-    "brand": "Bibliothèque numérique UMPT",
+    "brand": "UMPT WORLD OF TOMORROW",
     "brandBlurb": "Actes de conférences, livres, articles et profils d'auteurs dans un catalogue ouvert. Parcourez par titre, suivez la recherche et découvrez les auteurs.",
     "learnMore": "À propos d'UMPT",
     "categories": "Catégories",
@@ -786,7 +839,7 @@
     "email": "Nous écrire par e-mail",
     "feedback": "Envoyer un avis",
     "rss": "Flux RSS",
-    "copyright": "Bibliothèque numérique UMPT"
+    "copyright": "UMPT WORLD OF TOMORROW"
   },
   "pages": {
     "about": {
@@ -820,7 +873,7 @@
   },
   "blogs": {
     "heroTitle": "Blogs",
-    "metaDescription": "Parcourez tous les articles de blog de la Bibliothèque numérique UMPT avec auteurs, dates et extraits.",
+    "metaDescription": "Parcourez tous les articles de blog de la UMPT WORLD OF TOMORROW avec auteurs, dates et extraits.",
     "intro": "Parcourez chaque article publié. Sélectionnez des éléments, changez le tri ou ouvrez un titre pour lire l'article complet.",
     "loadError": "Les articles n'ont pas pu être chargés depuis le serveur de contenu. Veuillez réessayer dans un instant.",
     "empty": "Aucun article de blog n'a encore été publié.",
@@ -851,7 +904,7 @@
     "count": "{count, plural, one {# article} other {# articles}}",
     "empty": "Aucun article n'a encore été publié.",
     "loadError": "Les articles n'ont pas pu être chargés depuis le serveur de contenu. Veuillez réessayer dans un instant.",
-    "metaDescription": "Les derniers articles publiés dans la Bibliothèque numérique UMPT, du plus récent au plus ancien.",
+    "metaDescription": "Les derniers articles publiés dans la UMPT WORLD OF TOMORROW, du plus récent au plus ancien.",
     "tabLatest": "Récents",
     "tabMostViewed": "Les plus vus"
   },
@@ -936,6 +989,21 @@
     "body": "Cette page n'a pas pu être chargée. Réessayez ou revenez à la page d'accueil.",
     "retry": "Réessayer",
     "home": "Aller à la page d'accueil"
+  },
+  "feedbackPage": {
+    "heroTitle": "Avis",
+    "metaDescription": "Envoyez vos commentaires à l'équipe UMPT WORLD OF TOMORROW.",
+    "panelTitle": "Envoyer un avis",
+    "intro": "Dites-nous ce qui fonctionne, ce qui prête à confusion ou ce que vous aimeriez voir ensuite.",
+    "name": "Votre nom",
+    "email": "E-mail",
+    "message": "Votre message",
+    "messagePlaceholder": "Décrivez votre expérience ou votre suggestion…",
+    "defaultSubject": "Avis sur le site",
+    "submit": "Envoyer",
+    "sending": "Envoi…",
+    "saved": "Merci. Votre message a été envoyé.",
+    "saveError": "Impossible d'envoyer le message."
   },
   "loading": "Chargement…",
   "feedback": "Avis",

@@ -1,10 +1,10 @@
 {
   "meta": {
-    "title": "UMPT Digital Library",
+    "title": "UMPT WORLD OF TOMORROW",
     "description": "Posts, proceedings, books and author profiles from the UMPT community."
   },
   "brand": {
-    "home": "UMPT Digital Library home",
+    "home": "UMPT WORLD OF TOMORROW home",
     "short": "UMPT",
     "digital": "Digital",
     "library": "Library",
@@ -53,7 +53,7 @@
     "section": "Section"
   },
   "search": {
-    "placeholder": "Search UMPT Digital Library",
+    "placeholder": "Search UMPT WORLD OF TOMORROW",
     "submit": "Search",
     "advanced": "Advanced Search"
   },
@@ -117,11 +117,11 @@
     }
   },
   "home": {
-    "heroTitle": "UMPT Digital Library",
+    "heroTitle": "UMPT WORLD OF TOMORROW",
     "searchPlaceholder": "Search proceedings, books and people",
     "breadcrumb": "Home",
     "welcomeTitle": "Welcome",
-    "welcomeBody": "The UMPT Digital Library collects conference proceedings, books and author profiles in one place. Browse by title, explore the alphabetical index, or find the people behind the research.",
+    "welcomeBody": "The UMPT WORLD OF TOMORROW collects conference proceedings, books and author profiles in one place. Browse by title, explore the alphabetical index, or find the people behind the research.",
     "browseProceedings": "Browse Projects & Research",
     "browsePosts": "Read the Posts"
   },
@@ -169,7 +169,7 @@
     "readMore": "Read More",
     "viewBook": "View book",
     "buyNow": "Buy book",
-    "metaDescription": "Books published in the UMPT Digital Library, with authors, year and a short description.",
+    "metaDescription": "Books published in the UMPT WORLD OF TOMORROW, with authors, year and a short description.",
     "detail": {
       "by": "by",
       "format": "Format",
@@ -186,7 +186,7 @@
       "buyNow": "Buy now",
       "priceNote": "to buy",
       "noBuyLink": "Purchase link is not set yet.",
-      "purchaseDisclaimer": "You will leave UMPT Digital Library to complete your purchase on the store website."
+      "purchaseDisclaimer": "You will leave UMPT WORLD OF TOMORROW to complete your purchase on the store website."
     },
     "reviews": {
       "writeReview": "Reviews",
@@ -214,7 +214,7 @@
     "pageTitle": "People",
     "intro1": "Leading computer scientists, educators and practitioners publish their work in UMPT proceedings, journals, magazines and books. Discover the community of authors across the broad spectrum of computing disciplines through their author profiles.",
     "intro2": "Authors: claim your author profile, enhance it with your contact information and social identities, and build your connections.",
-    "metaDescription": "Find authors in the UMPT Digital Library by name or by subject."
+    "metaDescription": "Find authors in the UMPT WORLD OF TOMORROW by name or by subject."
   },
   "subjects": {
     "title": "Subjects",
@@ -319,6 +319,9 @@
       "home": "Home layout",
       "homeBody": "Set the decorative image beside UMPT Posts (Latest / Most Viewed) on the home page.",
       "homeNote": "Posts band accent",
+      "heroContext": "Hero context",
+      "heroContextBody": "Background, title and dark context panel on the gray hero bar under the main menu.",
+      "heroContextNote": "Home hero bar",
       "uploads": "Media",
       "uploadsBody": "Upload images to Parse and copy the URL into covers or page content.",
       "uploadsNote": "JPG, PNG, WebP, GIF"
@@ -337,6 +340,7 @@
       "editLogo": "Edit logo",
       "editFavicon": "Edit favicon",
       "editHome": "Edit home layout",
+      "editHeroContext": "Edit hero context",
       "uploadImages": "Upload images",
       "openInbox": "Open inbox",
       "openSubscribers": "View list"
@@ -353,6 +357,8 @@
       "logo": "Logo",
       "favicon": "Favicon",
       "home": "Home",
+      "heroContext": "Hero context",
+      "settings": "Settings",
       "uploads": "Uploads",
       "books": "Books",
       "projects": "Projects & Research",
@@ -723,6 +729,53 @@
       "saved": "Favicon saved. You may need a hard refresh (Ctrl+F5) to see the tab icon update.",
       "saveError": "Unable to save the favicon."
     },
+    "heroContext": {
+      "title": "Hero context",
+      "hint": "Controls the gray hero bar under the main menu (title + search). Choose the default pattern or upload your own background image for every public page with a hero.",
+      "previewTitle": "Preview",
+      "previewDefaultTitle": "UMPT WORLD OF TOMORROW",
+      "previewSearchPlaceholder": "Search proceedings, books and people",
+      "titleTitle": "Hero title",
+      "titleOverride": "Title override (optional)",
+      "titleOverridePlaceholder": "Leave empty to use each page’s default title",
+      "titleOverrideHint": "When set, replaces the large hero heading on public pages.",
+      "modeTitle": "Background",
+      "modePattern": "Gray pattern",
+      "modePatternHint": "Built-in low-poly style (ACM-like default).",
+      "modeImage": "Custom background image",
+      "modeImageHint": "Replace the gray pattern with your own JPG, PNG, WebP, or GIF.",
+      "overlay": "Dark overlay strength (lower = brighter hero)",
+      "imageTitle": "Hero background image",
+      "noImage": "No image yet — upload or paste a URL",
+      "uploadImage": "Upload background image",
+      "imageUrl": "Image URL",
+      "uploadsHint": "Need a hosted URL? Upload in Media first, then paste the link here.",
+      "fitTitle": "How the image fits",
+      "fitCover": "Full bar (cover)",
+      "fitCoverHint": "One image stretches across the whole hero (recommended).",
+      "fitTile": "Tiled mosaic",
+      "fitTileHint": "Repeat small tiles (portrait grid style).",
+      "adjustTitle": "Image adjustments",
+      "adjustHint": "Fine-tune the hero background like a photo editor. Changes appear in the preview above.",
+      "brightness": "Brightness",
+      "contrast": "Contrast",
+      "saturation": "Color saturation",
+      "grayscale": "Black & white mix",
+      "hue": "Color hue shift",
+      "blur": "Soft blur",
+      "resetAdjustments": "Reset image adjustments",
+      "contextTitle": "Context panel",
+      "showPanel": "Show context panel on the hero",
+      "showPanelHint": "Dark glass box beside the title (great for short welcome copy).",
+      "contextBody": "Panel copy",
+      "contextPlaceholder": "Welcome visitors or link to key collections…",
+      "panelOpacity": "Panel darkness",
+      "uploading": "Uploading…",
+      "saving": "Saving…",
+      "save": "Save hero context",
+      "saved": "Hero context saved.",
+      "saveError": "Unable to save hero context."
+    },
     "homePosts": {
       "title": "Home · UMPT Posts accent",
       "hint": "Controls the large illustration on the right of the UMPT Posts block (Latest and Most Viewed tabs) on the home page.",
@@ -798,7 +851,7 @@
     "rssLabel": "RSS feed of recent additions"
   },
   "footer": {
-    "brand": "UMPT Digital Library",
+    "brand": "UMPT WORLD OF TOMORROW",
     "brandBlurb": "Conference proceedings, books, posts, and author profiles in one open catalog. Browse by title, keep up with new research, and explore the people behind the work.",
     "learnMore": "About UMPT",
     "categories": "Categories",
@@ -815,18 +868,18 @@
     "email": "Contact us via email",
     "feedback": "Send Feedback",
     "rss": "RSS feed",
-    "copyright": "UMPT Digital Library"
+    "copyright": "UMPT WORLD OF TOMORROW"
   },
   "pages": {
     "about": {
       "title": "About",
-      "metaDescription": "Learn about the UMPT Digital Library, its mission, and the research content it publishes.",
-      "body": "The UMPT Digital Library collects conference proceedings, books, posts and author profiles in one place.\n\nBrowse by title, explore the alphabetical index, or find the people behind the research."
+      "metaDescription": "Learn about the UMPT WORLD OF TOMORROW, its mission, and the research content it publishes.",
+      "body": "The UMPT WORLD OF TOMORROW collects conference proceedings, books, posts and author profiles in one place.\n\nBrowse by title, explore the alphabetical index, or find the people behind the research."
     },
     "contact": {
       "title": "Contact",
-      "metaDescription": "Contact the UMPT Digital Library team. Send a message and we will get back to you.",
-      "body": "Use the form below to reach the UMPT Digital Library team. We read every message and reply as soon as we can.",
+      "metaDescription": "Contact the UMPT WORLD OF TOMORROW team. Send a message and we will get back to you.",
+      "body": "Use the form below to reach the UMPT WORLD OF TOMORROW team. We read every message and reply as soon as we can.",
       "name": "Your name",
       "email": "Email",
       "subject": "Subject",
@@ -838,18 +891,18 @@
     },
     "privacy": {
       "title": "Privacy",
-      "metaDescription": "How the UMPT Digital Library collects, uses and protects personal information.",
+      "metaDescription": "How the UMPT WORLD OF TOMORROW collects, uses and protects personal information.",
       "body": "We collect only the information needed to run the library, respond to contact messages, and moderate comments.\n\nWe do not sell personal data. Contact us if you want a message or comment removed."
     },
     "terms": {
       "title": "Terms",
-      "metaDescription": "Terms of use for the UMPT Digital Library website and published content.",
+      "metaDescription": "Terms of use for the UMPT WORLD OF TOMORROW website and published content.",
       "body": "Content on this site is provided for research and educational use. Do not misuse the service, attempt unauthorized access, or post unlawful material.\n\nWe may update these terms; continued use of the site means you accept the current version."
     }
   },
   "blogs": {
     "heroTitle": "Blogs",
-    "metaDescription": "Browse all blog posts in the UMPT Digital Library with authors, dates and excerpts.",
+    "metaDescription": "Browse all blog posts in the UMPT WORLD OF TOMORROW with authors, dates and excerpts.",
     "intro": "Browse every published post. Select items, change the sort order, or open a title to read the full article.",
     "loadError": "Posts could not be loaded from the content server. Please try again in a moment.",
     "empty": "No blog posts have been published yet.",
@@ -880,7 +933,7 @@
     "count": "{count, plural, one {# post} other {# posts}}",
     "empty": "No posts have been published yet.",
     "loadError": "Posts could not be loaded from the content server. Please try again in a moment.",
-    "metaDescription": "The latest posts published in the UMPT Digital Library, newest first.",
+    "metaDescription": "The latest posts published in the UMPT WORLD OF TOMORROW, newest first.",
     "tabLatest": "Latest",
     "tabMostViewed": "Most Viewed"
   },
@@ -961,7 +1014,7 @@
   },
   "notFound": {
     "title": "Page not found",
-    "metaDescription": "This page could not be found on the UMPT Digital Library. Continue from the home page, posts, or contact.",
+    "metaDescription": "This page could not be found on the UMPT WORLD OF TOMORROW. Continue from the home page, posts, or contact.",
     "body": "The page you are looking for does not exist or has been moved. Check the address, or continue from one of the sections below.",
     "linksTitle": "Continue to",
     "links": {
@@ -979,6 +1032,21 @@
     "body": "This page could not be loaded. Try again, or go back to the home page.",
     "retry": "Try again",
     "home": "Go to the home page"
+  },
+  "feedbackPage": {
+    "heroTitle": "Feedback",
+    "metaDescription": "Send feedback to the UMPT WORLD OF TOMORROW team. We read every message.",
+    "panelTitle": "Send feedback",
+    "intro": "Tell us what works well, what is confusing, or what you would like to see next. Your message goes to the same inbox as contact form submissions.",
+    "name": "Your name",
+    "email": "Email",
+    "message": "Your feedback",
+    "messagePlaceholder": "Describe your experience or suggestion…",
+    "defaultSubject": "Website feedback",
+    "submit": "Send feedback",
+    "sending": "Sending…",
+    "saved": "Thank you. Your feedback was sent.",
+    "saveError": "Unable to send your feedback."
   },
   "loading": "Loading…",
   "feedback": "Feedback",

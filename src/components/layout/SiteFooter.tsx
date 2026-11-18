@@ -59,7 +59,6 @@ const linkClass = "text-white/85 hover:text-white hover:underline";
 
 export function SiteFooter({ logo = DEFAULT_LOGO_SETTINGS }: { logo?: LogoSettings }) {
   const t = useTranslations();
-  const feedbackHref = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(t("feedback"))}`;
 
   return (
     <footer className="relative mt-auto overflow-hidden bg-chrome text-white">
@@ -109,10 +108,10 @@ export function SiteFooter({ logo = DEFAULT_LOGO_SETTINGS }: { logo?: LogoSettin
               </a>
             </li>
             <li>
-              <a href={feedbackHref} className={`inline-flex items-center gap-4 ${linkClass}`}>
+              <Link href="/feedback" className={`inline-flex items-center gap-4 ${linkClass}`}>
                 <IconMessage className="size-3 text-white/70" />
                 {t("footer.feedback")}
-              </a>
+              </Link>
             </li>
             <li>
               <a href="/api/rss" className={`inline-flex items-center gap-4 ${linkClass}`}>

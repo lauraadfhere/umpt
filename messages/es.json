@@ -1,10 +1,10 @@
 {
   "meta": {
-    "title": "Biblioteca Digital UMPT",
+    "title": "UMPT WORLD OF TOMORROW",
     "description": "Artículos, actas, libros y perfiles de autores de la comunidad UMPT."
   },
   "brand": {
-    "home": "Inicio de la Biblioteca Digital UMPT",
+    "home": "Inicio de la UMPT WORLD OF TOMORROW",
     "short": "UMPT",
     "digital": "Biblioteca",
     "library": "Digital",
@@ -117,11 +117,11 @@
     }
   },
   "home": {
-    "heroTitle": "Biblioteca Digital UMPT",
+    "heroTitle": "UMPT WORLD OF TOMORROW",
     "searchPlaceholder": "Buscar actas, libros y personas",
     "breadcrumb": "Inicio",
     "welcomeTitle": "Bienvenido",
-    "welcomeBody": "La Biblioteca Digital UMPT reúne actas de congresos, libros y perfiles de autores. Busque por título, explore el índice alfabético o encuentre a las personas detrás de la investigación.",
+    "welcomeBody": "La UMPT WORLD OF TOMORROW reúne actas de congresos, libros y perfiles de autores. Busque por título, explore el índice alfabético o encuentre a las personas detrás de la investigación.",
     "browseProceedings": "Explorar actas",
     "browsePosts": "Leer los artículos"
   },
@@ -169,7 +169,7 @@
     "readMore": "Leer más",
     "viewBook": "Ver libro",
     "buyNow": "Comprar",
-    "metaDescription": "Libros publicados en la Biblioteca Digital UMPT, con autores, año y una breve descripción.",
+    "metaDescription": "Libros publicados en la UMPT WORLD OF TOMORROW, con autores, año y una breve descripción.",
     "detail": {
       "by": "de",
       "format": "Formato",
@@ -194,7 +194,7 @@
     "pageTitle": "Personas",
     "intro1": "Informáticos, educadores y profesionales destacados publican su trabajo en actas, revistas, magacines y libros UMPT. Descubra la comunidad de autores a través de sus perfiles.",
     "intro2": "Autores: reclame su perfil, complételo con sus datos de contacto e identidades sociales y amplíe sus conexiones.",
-    "metaDescription": "Encuentre autores de la Biblioteca Digital UMPT por nombre o por materia."
+    "metaDescription": "Encuentre autores de la UMPT WORLD OF TOMORROW por nombre o por materia."
   },
   "subjects": {
     "title": "Materias",
@@ -296,6 +296,9 @@
       "home": "Inicio",
       "homeBody": "Define la ilustración a la derecha del bloque Artículos UMPT (Recientes / Más vistos) en la página de inicio.",
       "homeNote": "Acento de artículos",
+      "heroContext": "Contexto del héroe",
+      "heroContextBody": "Fondo, título y panel oscuro en la barra gris bajo el menú principal.",
+      "heroContextNote": "Barra del héroe",
       "uploads": "Medios",
       "uploadsBody": "Upload images to Parse and copy the URL into covers or page content.",
       "uploadsNote": "JPG, PNG, WebP, GIF"
@@ -314,6 +317,7 @@
       "editLogo": "Editar logo",
       "editFavicon": "Editar favicon",
       "editHome": "Editar inicio",
+      "editHeroContext": "Editar héroe",
       "uploadImages": "Subir imágenes",
       "openInbox": "Abrir bandeja"
     },
@@ -329,6 +333,8 @@
       "logo": "Logo",
       "favicon": "Favicon",
       "home": "Inicio",
+      "heroContext": "Contexto del héroe",
+      "settings": "Ajustes",
       "uploads": "Medios",
       "books": "Libros",
       "projects": "Proyectos e investigación",
@@ -694,6 +700,53 @@
       "saved": "Favicon guardado. Puede hacer falta refrescar con Ctrl+F5 para verlo en la pestaña.",
       "saveError": "No se pudo guardar el favicon."
     },
+    "heroContext": {
+      "title": "Contexto del héroe",
+      "hint": "Controla la barra gris bajo la navegación: patrón geométrico o mosaico de fotos, título opcional y panel de contexto.",
+      "previewTitle": "Vista previa",
+      "previewDefaultTitle": "UMPT WORLD OF TOMORROW",
+      "previewSearchPlaceholder": "Buscar actas, libros y personas",
+      "titleTitle": "Título del héroe",
+      "titleOverride": "Sustituir título (opcional)",
+      "titleOverridePlaceholder": "Dejar vacío para el título de cada página",
+      "titleOverrideHint": "Reemplaza el encabezado grande en las páginas públicas.",
+      "modeTitle": "Fondo",
+      "modePattern": "Patrón gris",
+      "modePatternHint": "Estilo low-poly integrado por defecto.",
+      "modeImage": "Imagen de fondo personalizada",
+      "modeImageHint": "Sustituye el patrón gris por su propia imagen.",
+      "overlay": "Intensidad del velo oscuro",
+      "imageTitle": "Imagen del héroe",
+      "noImage": "Sin imagen — suba o pegue una URL",
+      "uploadImage": "Subir imagen de fondo",
+      "imageUrl": "URL de la imagen",
+      "uploadsHint": "¿Necesita una URL? Suba primero en Medios y pegue el enlace aquí.",
+      "fitTitle": "Ajuste de la imagen",
+      "fitCover": "Barra completa (cover)",
+      "fitCoverHint": "Una imagen cubre todo el héroe (recomendado).",
+      "fitTile": "Mosaico",
+      "fitTileHint": "Repetición en mosaico pequeño.",
+      "adjustTitle": "Ajustes de imagen",
+      "adjustHint": "Ajuste brillo, contraste y color como en un editor de fotos.",
+      "brightness": "Brillo",
+      "contrast": "Contraste",
+      "saturation": "Saturación",
+      "grayscale": "Escala de grises",
+      "hue": "Tono de color",
+      "blur": "Desenfoque",
+      "resetAdjustments": "Restablecer ajustes",
+      "contextTitle": "Panel de contexto",
+      "showPanel": "Mostrar panel en el héroe",
+      "showPanelHint": "Caja oscura junto al título para un texto breve.",
+      "contextBody": "Texto del panel",
+      "contextPlaceholder": "Mensaje de bienvenida o enlaces clave…",
+      "panelOpacity": "Opacidad del panel",
+      "uploading": "Subiendo…",
+      "saving": "Guardando…",
+      "save": "Guardar contexto del héroe",
+      "saved": "Contexto del héroe guardado.",
+      "saveError": "No se pudo guardar el contexto del héroe."
+    },
     "homePosts": {
       "title": "Inicio · acento Artículos UMPT",
       "hint": "Controla la ilustración grande a la derecha del bloque Artículos UMPT (Recientes y Más vistos) en la página de inicio.",
@@ -769,7 +822,7 @@
     "rssLabel": "Canal RSS de incorporaciones recientes"
   },
   "footer": {
-    "brand": "Biblioteca digital UMPT",
+    "brand": "UMPT WORLD OF TOMORROW",
     "brandBlurb": "Actas de conferencias, libros, publicaciones y perfiles de autores en un catálogo abierto. Explore por título, siga la investigación y conozca a los autores.",
     "learnMore": "Acerca de UMPT",
     "categories": "Categorías",
@@ -786,18 +839,18 @@
     "email": "Escríbanos por correo",
     "feedback": "Enviar comentarios",
     "rss": "Canal RSS",
-    "copyright": "Biblioteca Digital UMPT"
+    "copyright": "UMPT WORLD OF TOMORROW"
   },
   "pages": {
     "about": {
       "title": "Acerca de",
-      "metaDescription": "Conozca la Biblioteca Digital UMPT, su misión y el contenido de investigación que publica.",
-      "body": "La Biblioteca Digital UMPT reúne actas de congresos, libros, artículos y perfiles de autores en un solo lugar.\n\nExplore por título, use el índice alfabético o encuentre a las personas detrás de la investigación."
+      "metaDescription": "Conozca la UMPT WORLD OF TOMORROW, su misión y el contenido de investigación que publica.",
+      "body": "La UMPT WORLD OF TOMORROW reúne actas de congresos, libros, artículos y perfiles de autores en un solo lugar.\n\nExplore por título, use el índice alfabético o encuentre a las personas detrás de la investigación."
     },
     "contact": {
       "title": "Contacto",
-      "metaDescription": "Contacte al equipo de la Biblioteca Digital UMPT. Envíe un mensaje y le responderemos.",
-      "body": "Use el formulario siguiente para escribir al equipo de la Biblioteca Digital UMPT. Leemos cada mensaje y respondemos lo antes posible.",
+      "metaDescription": "Contacte al equipo de la UMPT WORLD OF TOMORROW. Envíe un mensaje y le responderemos.",
+      "body": "Use el formulario siguiente para escribir al equipo de la UMPT WORLD OF TOMORROW. Leemos cada mensaje y respondemos lo antes posible.",
       "name": "Su nombre",
       "email": "Correo",
       "subject": "Asunto",
@@ -809,18 +862,18 @@
     },
     "privacy": {
       "title": "Privacidad",
-      "metaDescription": "Cómo la Biblioteca Digital UMPT recopila, usa y protege la información personal.",
+      "metaDescription": "Cómo la UMPT WORLD OF TOMORROW recopila, usa y protege la información personal.",
       "body": "Solo recopilamos la información necesaria para operar la biblioteca, responder mensajes de contacto y moderar comentarios.\n\nNo vendemos datos personales. Contáctenos si desea que se elimine un mensaje o comentario."
     },
     "terms": {
       "title": "Términos",
-      "metaDescription": "Términos de uso del sitio de la Biblioteca Digital UMPT y del contenido publicado.",
+      "metaDescription": "Términos de uso del sitio de la UMPT WORLD OF TOMORROW y del contenido publicado.",
       "body": "El contenido de este sitio se ofrece para uso de investigación y educativo. No abuse del servicio, no intente accesos no autorizados ni publique material ilegal.\n\nPodemos actualizar estos términos; el uso continuado del sitio implica aceptar la versión vigente."
     }
   },
   "blogs": {
     "heroTitle": "Blogs",
-    "metaDescription": "Explore todas las publicaciones del blog en la Biblioteca digital UMPT con autores, fechas y extractos.",
+    "metaDescription": "Explore todas las publicaciones del blog en la UMPT WORLD OF TOMORROW con autores, fechas y extractos.",
     "intro": "Explore cada publicación. Seleccione elementos, cambie el orden o abra un título para leer el artículo completo.",
     "loadError": "No se pudieron cargar las publicaciones desde el servidor de contenido. Inténtelo de nuevo en un momento.",
     "empty": "Aún no se han publicado entradas de blog.",
@@ -851,7 +904,7 @@
     "count": "{count, plural, one {# artículo} other {# artículos}}",
     "empty": "Aún no se ha publicado ningún artículo.",
     "loadError": "No se pudieron cargar los artículos desde el servidor de contenido. Inténtelo de nuevo en un momento.",
-    "metaDescription": "Los últimos artículos publicados en la Biblioteca Digital UMPT, del más reciente al más antiguo.",
+    "metaDescription": "Los últimos artículos publicados en la UMPT WORLD OF TOMORROW, del más reciente al más antiguo.",
     "tabLatest": "Recientes",
     "tabMostViewed": "Más vistos"
   },
@@ -918,7 +971,7 @@
   },
   "notFound": {
     "title": "Página no encontrada",
-    "metaDescription": "No se encontró esta página en la Biblioteca Digital UMPT. Continúe desde el inicio, los artículos o el contacto.",
+    "metaDescription": "No se encontró esta página en la UMPT WORLD OF TOMORROW. Continúe desde el inicio, los artículos o el contacto.",
     "body": "La página que busca no existe o se ha movido. Compruebe la dirección o continúe desde una de las secciones siguientes.",
     "linksTitle": "Continuar a",
     "links": {
@@ -936,6 +989,21 @@
     "body": "No se pudo cargar esta página. Inténtelo de nuevo o vuelva a la página de inicio.",
     "retry": "Reintentar",
     "home": "Ir a la página de inicio"
+  },
+  "feedbackPage": {
+    "heroTitle": "Comentarios",
+    "metaDescription": "Envíe comentarios al equipo de UMPT WORLD OF TOMORROW.",
+    "panelTitle": "Enviar comentarios",
+    "intro": "Cuéntenos qué funciona bien, qué resulta confuso o qué le gustaría ver a continuación.",
+    "name": "Su nombre",
+    "email": "Correo",
+    "message": "Sus comentarios",
+    "messagePlaceholder": "Describa su experiencia o sugerencia…",
+    "defaultSubject": "Comentarios del sitio",
+    "submit": "Enviar",
+    "sending": "Enviando…",
+    "saved": "Gracias. Sus comentarios fueron enviados.",
+    "saveError": "No se pudieron enviar los comentarios."
   },
   "loading": "Cargando…",
   "feedback": "Comentarios",

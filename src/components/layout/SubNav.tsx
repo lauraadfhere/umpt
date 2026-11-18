@@ -32,13 +32,17 @@ type Props = {
 export function SubNav({ items, variant = "dark", sticky = true }: Props) {
   const t = useTranslations("nav");
   const style = styles[variant];
-  const stick =
-    sticky ?
-      "sticky top-[var(--sticky-subnav-top)] z-[55] shadow-[0_2px_6px_rgba(0,0,0,0.12)] supports-[backdrop-filter]:bg-[#ebebeb]/92 supports-[backdrop-filter]:backdrop-blur-sm"
+  const stick = sticky ? "sticky top-[var(--sticky-subnav-top)] z-[55] shadow-[0_2px_6px_rgba(0,0,0,0.12)]" : "";
+  const stickDark = sticky ? "supports-[backdrop-filter]:bg-[#2e2e2e]/96 supports-[backdrop-filter]:backdrop-blur-sm" : "";
+  const stickLight = sticky
+    ? "supports-[backdrop-filter]:bg-[#ebebeb]/92 supports-[backdrop-filter]:backdrop-blur-sm supports-[backdrop-filter]:from-[#f1f1f1]/92 supports-[backdrop-filter]:to-[#e2e2e2]/92"
     : "";
 
   return (
-    <nav className={`${style.bar} ${stick} ${variant === "light" && sticky ? "supports-[backdrop-filter]:from-[#f1f1f1]/92 supports-[backdrop-filter]:to-[#e2e2e2]/92" : ""}`} aria-label={t("section")}>
+    <nav
+      className={`${style.bar} ${stick} ${variant === "dark" ? stickDark : stickLight}`}
+      aria-label={t("section")}
+    >
       <ul className={`mx-auto flex max-w-[1200px] flex-wrap justify-center gap-x-0.5 ${style.list}`}>
         {items.map((item) => (
           <li key={item.label}>

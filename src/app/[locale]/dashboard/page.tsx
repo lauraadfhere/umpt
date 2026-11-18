@@ -35,6 +35,16 @@ function IconHomeLayout({ className }: { className?: string }) {
   );
 }
 
+function IconHeroContext({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+      <rect x="3" y="6" width="18" height="12" rx="1" />
+      <path d="M3 10h18" />
+      <path d="M7 14h8" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function IconBooks({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
@@ -220,6 +230,15 @@ export default async function DashboardPage({ params }: Props) {
       count: "—",
       note: t("modules.homeNote"),
       icon: <IconHomeLayout className="size-5" />,
+    },
+    {
+      key: "heroContext",
+      href: "/dashboard/hero-context",
+      actionHref: "/dashboard/hero-context",
+      actionKey: "editHeroContext",
+      count: "—",
+      note: t("modules.heroContextNote"),
+      icon: <IconHeroContext className="size-5" />,
     },
     {
       key: "uploads",

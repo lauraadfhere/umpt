@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
-import { DASHBOARD_TABS, type DashboardTab } from "@/lib/dashboard-nav";
+import type { DashboardTab } from "@/lib/dashboard-nav";
 import { PageShell } from "@/components/layout/PageShell";
+import { DashboardSubNav } from "@/components/admin/DashboardSubNav";
 
 export async function DashboardShell({
   active,
@@ -17,11 +18,8 @@ export async function DashboardShell({
 
   return (
     <PageShell
-      subNav={DASHBOARD_TABS.map((tab) => ({
-        label: t(`tabs.${tab.key}`),
-        href: tab.href,
-        active: tab.key === active,
-      }))}
+      applyHeroContext={false}
+      subNavSlot={<DashboardSubNav active={active} />}
       hero={{ title: heading }}
       breadcrumbs={[{ label: tCommon("home"), href: "/" }, { label: t("heroTitle"), href: "/dashboard" }, ...(title && title !== t("heroTitle") ? [{ label: title }] : [])]}
     >

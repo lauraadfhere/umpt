@@ -13,7 +13,7 @@ export const SITE_URL = (
 /** Origin used in robots.txt and sitemap.xml — never localhost. */
 export const PUBLIC_SITE_URL = SITE_URL.includes("localhost") ? PRODUCTION_SITE_URL : SITE_URL;
 export const SITE_HOST = PUBLIC_SITE_URL.replace(/^https?:\/\//, "").replace(/\/+$/, "");
-export const SITE_NAME = "UMPT Digital Library";
+export const SITE_NAME = "UMPT WORLD OF TOMORROW";
 
 export const INDEXABLE_ROBOTS: Metadata["robots"] = {
   index: true,
