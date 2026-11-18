@@ -27,8 +27,8 @@ export async function PageShell({ active, subNav, subNavVariant, hero, breadcrum
 
   return (
     <>
-      <SiteHeader active={active} signedIn={signedIn} logo={logo} />
-      {subNav && <SubNav items={subNav} variant={subNavVariant} />}
+      <SiteHeader active={active} signedIn={signedIn} logo={logo} hideMobileSectionBar={Boolean(subNav)} />
+      {subNav && <SubNav items={subNav} variant={subNavVariant} sticky />}
       {hero && <HeroBanner {...hero} />}
       <Breadcrumbs items={breadcrumbs} />
       <main className={`flex-1 ${flush ? "" : "pb-12"}`}>{children}</main>

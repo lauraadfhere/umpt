@@ -40,7 +40,7 @@ export function ReadingSidebar({ title, year, previous, next, sections }: Props)
   const t = useTranslations("reading");
 
   return (
-    <aside aria-label={t("sections")} className="self-start bg-panel md:sticky md:top-4 md:max-h-[calc(100vh-2rem)] md:overflow-y-auto">
+    <aside aria-label={t("sections")} className="self-start bg-panel">
       <div className="bg-panel-head px-3 py-2.5">
         <SectionTitle as="p" size="sm" tone="accent">
           {t("tableOfContents")}

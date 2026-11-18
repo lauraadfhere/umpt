@@ -11,38 +11,88 @@ import { IconSearch } from "@/components/ui/Icons";
 import type { LogoSettings } from "@/lib/logo-config";
 import { NAV, type NavKey } from "@/lib/nav";
 
-function MenuIcon({ open }: { open: boolean }) {
+function BurgerIcon({ open }: { open: boolean }) {
+  if (open) {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden className="size-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+        <path d="M7 7l10 10M17 7L7 17" />
+      </svg>
+    );
+  }
   return (
-    <svg viewBox="0 0 24 24" aria-hidden className="size-6 fill-none stroke-current" strokeWidth="2" strokeLinecap="round">
-      {open ? (
-        <>
-          <path d="M6 6l12 12M18 6L6 18" />
-        </>
-      ) : (
-        <>
-          <path d="M4 7h16M4 12h16M4 17h16" />
-        </>
-      )}
+    <span className="flex w-[22px] flex-col gap-[5px]" aria-hidden>
+      <span className="block h-[2px] w-full rounded-full bg-current" />
+      <span className="block h-[2px] w-full rounded-full bg-current" />
+      <span className="block h-[2px] w-full rounded-full bg-current" />
+    </span>
+  );
+}
+
+function IconUser({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden className={className} fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="8" r="3.5" />
+      <path d="M5.5 20.5c.5-3.5 2.8-5.5 6.5-5.5s6 2 6.5 5.5" />
     </svg>
   );
 }
 
-export function SiteHeader({ active, signedIn = false, logo }: { active?: NavKey; signedIn?: boolean; logo?: LogoSettings }) {
+function IconChevronDown({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 20 20" aria-hidden className={className} fill="currentColor">
+      <path d="M5.25 7.5 10 12.25 14.75 7.5H5.25Z" />
+    </svg>
+  );
+}
+
+export function SiteHeader({
+  active,
+  signedIn = false,
+  logo,
+  hideMobileSectionBar = false,
+}: {
+  active?: NavKey;
+  signedIn?: boolean;
+  logo?: LogoSettings;
+  /** Reading pages use a sticky SubNav instead of the gray section strip. */
+  hideMobileSectionBar?: boolean;
+}) {
   const t = useTranslations();
   const locale = useLocale();
   const menuId = useId();
+  const sectionId = useId();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [sectionOpen, setSectionOpen] = useState(false);
+  const [readerSignedIn, setReaderSignedIn] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (!menuOpen) return;
+    fetch("/api/reader/session")
+      .then(async (response) => {
+        const data = (await response.json()) as { session?: unknown };
+        setReaderSignedIn(Boolean(data.session));
+      })
+      .catch(() => setReaderSignedIn(false));
+  }, []);
+
+  const sectionLabel = active ? t(`nav.${active}`) : t("nav.mobileHome");
+
+  useEffect(() => {
+    if (!menuOpen && !sectionOpen) return;
     function onKey(event: KeyboardEvent) {
-      if (event.key === "Escape") setMenuOpen(false);
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        setSectionOpen(false);
+      }
     }
     function onPointer(event: MouseEvent) {
-      if (!headerRef.current?.contains(event.target as Node)) setMenuOpen(false);
+      if (!headerRef.current?.contains(event.target as Node)) {
+        setMenuOpen(false);
+        setSectionOpen(false);
+      }
     }
-    document.body.style.overflow = "hidden";
+    if (menuOpen) document.body.style.overflow = "hidden";
+    else if (!sectionOpen) document.body.style.overflow = "";
     document.addEventListener("keydown", onKey);
     document.addEventListener("mousedown", onPointer);
     return () => {
@@ -50,7 +100,7 @@ export function SiteHeader({ active, signedIn = false, logo }: { active?: NavKey
       document.removeEventListener("keydown", onKey);
       document.removeEventListener("mousedown", onPointer);
     };
-  }, [menuOpen]);
+  }, [menuOpen, sectionOpen]);
 
   const authLinks = signedIn ? (
     <>
@@ -74,31 +124,91 @@ export function SiteHeader({ active, signedIn = false, logo }: { active?: NavKey
     </>
   );
 
+  const userHref = signedIn ? "/dashboard" : readerSignedIn ? "/reader" : "/login";
+  const userLabel = signedIn ? t("auth.dashboard") : readerSignedIn ? t("reader.hub.title") : t("auth.signIn");
+
   return (
-    <header ref={headerRef} className="relative z-40 bg-black text-white">
-      <div className="flex min-h-[50px] items-stretch justify-between border-b border-white/10 ps-3">
-        <div className="flex min-w-0 flex-1 items-center gap-2 py-2">
-          <button
-            type="button"
-            className="inline-flex size-11 shrink-0 touch-manipulation items-center justify-center rounded-sm hover:bg-white/10 md:hidden"
-            aria-expanded={menuOpen}
-            aria-controls={menuId}
-            aria-label={menuOpen ? t("nav.menuClose") : t("nav.menuOpen")}
-            onClick={() => setMenuOpen((value) => !value)}
-          >
-            <MenuIcon open={menuOpen} />
-          </button>
-          <BrandMark logo={logo} />
+    <header ref={headerRef} className="sticky top-0 z-[60] bg-black text-white shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
+        {/* Mobile: ACM-style top bar (black) */}
+        <div className="grid min-h-[48px] grid-cols-[52px_1fr_52px] items-stretch border-b border-white/15 md:hidden">
+        <button
+          type="button"
+          className="flex touch-manipulation items-center justify-center border-e border-white/20 hover:bg-white/5"
+          aria-expanded={menuOpen}
+          aria-controls={menuId}
+          aria-label={menuOpen ? t("nav.menuClose") : t("nav.menuOpen")}
+          onClick={() => {
+            setSectionOpen(false);
+            setMenuOpen((value) => !value);
+          }}
+        >
+          <BurgerIcon open={menuOpen} />
+        </button>
+        <div className="flex items-center justify-center border-x border-white/20 px-1">
+          <BrandMark logo={logo} variant="header" compact />
+        </div>
+        <Link href={userHref} className="flex items-center justify-center border-s border-white/20 hover:bg-white/5" aria-label={userLabel}>
+          <IconUser className="size-7" />
+        </Link>
         </div>
 
+        {/* Mobile: gray section strip — ACM “CONEXT” bar (hidden when sticky SubNav is shown) */}
+        <div
+          className={`relative border-y border-black bg-gradient-to-b from-[#efefef] via-[#e6e6e6] to-[#dddddd] text-text shadow-[inset_0_1px_0_rgba(255,255,255,0.65)] md:hidden ${hideMobileSectionBar ? "hidden" : ""}`}
+        >
+        <button
+          type="button"
+          className="mx-auto flex w-full max-w-[1200px] touch-manipulation items-center justify-center gap-1 px-4 py-[9px] text-[12px] font-semibold tracking-[0.16em] text-[#1a1a1a] uppercase"
+          aria-expanded={sectionOpen}
+          aria-controls={sectionId}
+          onClick={() => {
+            setMenuOpen(false);
+            setSectionOpen((value) => !value);
+          }}
+        >
+          <span>{sectionLabel}</span>
+          <IconChevronDown className={`size-[14px] shrink-0 text-[#333] transition ${sectionOpen ? "rotate-180" : ""}`} />
+        </button>
+        {sectionOpen && (
+          <ul id={sectionId} className="absolute start-0 end-0 top-full z-50 max-h-[60vh] overflow-y-auto border-b border-black bg-[#e8e8e8] shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+            <li>
+              <Link
+                href="/"
+                onClick={() => setSectionOpen(false)}
+                className={`block border-b border-[#d0d0d0] px-4 py-3 text-center text-[14px] font-medium ${!active ? "bg-white font-semibold text-link" : "hover:bg-white/70"}`}
+              >
+                {t("nav.mobileHome")}
+              </Link>
+            </li>
+            {NAV.map(({ key, href }) => (
+              <li key={key}>
+                <Link
+                  href={href}
+                  onClick={() => setSectionOpen(false)}
+                  aria-current={active === key ? "page" : undefined}
+                  className={`block border-b border-[#d0d0d0] px-4 py-3 text-center text-[14px] font-medium last:border-b-0 ${active === key ? "bg-white font-semibold text-link" : "hover:bg-white/70"}`}
+                >
+                  {t(`nav.${key}`)}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+        </div>
+
+      {/* Desktop: original chrome row */}
+      <div className="hidden min-h-[50px] items-stretch justify-between border-b border-white/10 ps-3 md:flex">
+        <div className="flex items-center py-2">
+          <BrandMark logo={logo} />
+        </div>
         <div className="flex items-stretch text-[13px]">
-          <div className="hidden items-center px-3 md:flex">
+          <div className="flex items-center px-3">
             <SubscribeUpgrade />
           </div>
           <div className="flex items-center border-s border-white/10 px-3">
             <LanguageSwitcher />
           </div>
-          <div className="hidden items-stretch md:flex">{authLinks}</div>
+          {authLinks}
         </div>
       </div>
 
@@ -136,14 +246,14 @@ export function SiteHeader({ active, signedIn = false, logo }: { active?: NavKey
             {t("search.advanced")}
           </Link>
         </div>
-      </div>
+        </div>
 
       {menuOpen && (
         <>
-          <div className="fixed inset-0 top-[50px] z-30 bg-black/50 md:hidden" aria-hidden onClick={() => setMenuOpen(false)} />
+          <div className="fixed inset-0 top-[88px] z-30 bg-black/50 md:hidden" aria-hidden onClick={() => setMenuOpen(false)} />
           <div
             id={menuId}
-            className="absolute start-0 end-0 top-full z-40 max-h-[min(80vh,calc(100dvh-3.5rem))] overflow-y-auto border-b border-white/15 bg-black shadow-lg md:hidden"
+            className="absolute start-0 end-0 top-full z-40 max-h-[min(75vh,calc(100dvh-5.5rem))] overflow-y-auto border-b border-white/15 bg-black shadow-lg md:hidden"
           >
             <nav aria-label={t("nav.label")} className="flex flex-col px-4 py-3 text-[16px] font-medium">
               {NAV.map(({ key, href }) => (
@@ -158,6 +268,9 @@ export function SiteHeader({ active, signedIn = false, logo }: { active?: NavKey
                 </Link>
               ))}
             </nav>
+            <div className="border-t border-white/10 px-4 py-4">
+              <LanguageSwitcher />
+            </div>
             <div className="border-t border-white/10 px-4 py-4">
               <SubscribeUpgrade />
             </div>

@@ -52,15 +52,15 @@ export default async function HomePage({ params }: Props) {
       breadcrumbs={[{ label: t("breadcrumb") }]}
     >
       <JsonLd data={websiteJsonLd(locale, tMeta("description"))} />
-      <div className="mx-auto max-w-[1200px] px-6">
-        <Panel title={t("welcomeTitle")}>
+      <div className="mx-auto max-w-[1200px] px-6 max-md:text-[18px]">
+        <Panel title={t("welcomeTitle")} className="max-md:[&_h2]:text-[25px]">
           <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
-            <p className="max-w-3xl text-[14px] leading-[1.55]">{t("welcomeBody")}</p>
+            <p className="max-w-3xl text-[18px] leading-[1.55] md:text-[14px]">{t("welcomeBody")}</p>
             <div className="flex flex-wrap gap-3">
-              <Link href="/posts" className="bg-link px-4 py-2.5 text-[14px] font-semibold text-white hover:bg-link-hover">
+              <Link href="/posts" className="bg-link px-4 py-2.5 text-[18px] font-semibold text-white hover:bg-link-hover md:text-[14px]">
                 {t("browsePosts")}
               </Link>
-              <Link href="/proceedings" className="border border-text px-4 py-2.5 text-[14px] font-semibold text-text hover:bg-white">
+              <Link href="/proceedings" className="border border-text px-4 py-2.5 text-[18px] font-semibold text-text hover:bg-white md:text-[14px]">
                 {t("browseProceedings")}
               </Link>
             </div>

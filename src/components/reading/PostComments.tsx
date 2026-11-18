@@ -2,6 +2,7 @@
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { formatDate } from "@/lib/format";
 import { namesMatch } from "@/lib/profile-config";
 import { indexCommentsByParent } from "@/lib/comment-thread";
@@ -312,7 +313,12 @@ export function PostComments({
           </button>
         </form>
       ) : (
-        <p className="mt-4 text-[13px] text-muted">{t("signedInAs", { email: reader.email })}</p>
+        <p className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-muted">
+          <span>{t("signedInAs", { email: reader.email })}</span>
+          <Link href="/reader" className="font-semibold text-link hover:underline">
+            {t("openReaderSpace")}
+          </Link>
+        </p>
       )}
 
       <form onSubmit={submitComment} className="mt-6 border border-rule bg-panel px-5 py-5">

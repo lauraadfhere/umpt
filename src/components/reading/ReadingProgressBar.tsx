@@ -45,7 +45,7 @@ export function ReadingProgressBar() {
       aria-valuemin={0}
       aria-valuemax={100}
       aria-valuenow={Math.round(progress)}
-      className="pointer-events-none fixed inset-x-0 top-0 z-[90] h-[3px] bg-panel-head"
+      className="pointer-events-none fixed inset-x-0 top-0 z-[70] h-[3px] bg-panel-head"
     >
       <div
         className="h-full w-full bg-[var(--color-reading-progress)] shadow-[0_0_10px_color-mix(in_srgb,var(--color-reading-progress)_55%,transparent)] transition-transform duration-150 ease-out"

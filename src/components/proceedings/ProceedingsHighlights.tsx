@@ -28,7 +28,7 @@ function ConferencePromo() {
       <div className="relative flex h-full flex-col justify-between gap-10 p-6">
         <div>
           <h3 className="text-[20px] font-semibold italic">{t("promoTitle")}</h3>
-          <p className="mt-3 max-w-[400px] text-[14px] leading-[1.6] italic text-white/90">{t("promoBody")}</p>
+          <p className="mt-3 max-w-[400px] text-[18px] leading-[1.6] italic text-white/90 md:text-[14px]">{t("promoBody")}</p>
         </div>
         <Link href="/proceedings" className="block max-w-[290px] border-s-2 border-white ps-4 text-[24px] leading-[1.25] font-semibold italic hover:underline">
           {t("promoCta")}
@@ -44,14 +44,14 @@ export function ProceedingsHighlights({ latest, alphabetical }: { latest: Procee
   return (
     <section className="relative overflow-hidden">
       <SectionArt />
-      <div className="relative mx-auto max-w-[1200px] px-6 pt-12">
-        <SectionTitle className="mb-6">{t("title")}</SectionTitle>
+      <div className="relative mx-auto max-w-[1200px] px-6 pt-12 max-md:text-[18px]">
+        <SectionTitle className="mb-6 max-md:!text-[22px]">{t("title")}</SectionTitle>
         <div className="grid gap-8 lg:grid-cols-[1fr_470px]">
           <ProceedingsTabs latest={latest} alphabetical={alphabetical} />
           <ConferencePromo />
         </div>
         <div className="mt-8 border-t border-rule pt-4 text-end">
-          <Link href="/proceedings" className="inline-flex items-center gap-2 text-[14px] text-link hover:text-link-hover hover:underline">
+          <Link href="/proceedings" className="inline-flex items-center gap-2 text-[18px] text-link hover:text-link-hover hover:underline md:text-[14px]">
             {t("viewAll")}
             <IconArrowRight className="h-3 w-7 rtl:rotate-180" />
           </Link>

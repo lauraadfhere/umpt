@@ -32,7 +32,7 @@ export function PostsTabs({ latest, mostViewed }: { latest: PostSummary[]; mostV
             aria-selected={tab === key}
             aria-controls="posts-tabpanel"
             onClick={() => setTab(key)}
-            className={`border-b-2 pb-1.5 text-[16px] ${tab === key ? "border-text font-semibold text-text" : "border-transparent text-muted hover:text-text"}`}
+            className={`border-b-2 pb-1.5 text-[20px] md:text-[16px] ${tab === key ? "border-text font-semibold text-text" : "border-transparent text-muted hover:text-text"}`}
           >
             {label}
           </button>
@@ -48,12 +48,12 @@ export function PostsTabs({ latest, mostViewed }: { latest: PostSummary[]; mostV
               <Link
                 href={`/posts/${post.slug}`}
                 {...textProps}
-                className="text-[16px] leading-tight font-medium text-[#222] hover:text-link"
+                className="text-[20px] leading-tight font-medium text-[#222] hover:text-link md:text-[16px]"
               >
                 {post.title}
               </Link>
               {subtitle && (
-                <p {...textProps} className="mt-0.5 line-clamp-2 text-[12px] leading-snug italic text-muted">
+                <p {...textProps} className="mt-0.5 line-clamp-2 text-[16px] leading-snug italic text-muted md:text-[12px]">
                   {subtitle}
                 </p>
               )}

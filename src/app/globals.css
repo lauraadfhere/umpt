@@ -36,6 +36,17 @@
   --color-footer-line: #444444;
 }
 
+:root {
+  --sticky-site-header: 6rem;
+  --sticky-subnav-top: 3rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --sticky-subnav-top: var(--sticky-site-header);
+  }
+}
+
 html {
   -webkit-text-size-adjust: 100%;
 }

@@ -22,6 +22,20 @@ export type Comment = {
 
 export type ModeratedComment = Comment & { slug: string; isApproved: boolean };
 
+export type ReaderComment = ModeratedComment & { userEmail: string };
+
+export type ReaderActivityStats = {
+  total: number;
+  approved: number;
+  pending: number;
+  replies: number;
+  likes: number;
+  dislikes: number;
+  discussions: number;
+  engagementScore: number;
+  monthly: { label: string; count: number }[];
+};
+
 function dateValue(value: unknown): string | null {
   if (typeof value === "string" && value) return value;
   if (value && typeof value === "object" && typeof (value as { iso?: unknown }).iso === "string") return (value as { iso: string }).iso;
@@ -155,7 +169,7 @@ export async function createComment(input: { slug: string; postId?: string; name
       articleSlug: input.slug,
       articleId: input.postId,
       userName: input.name,
-      userEmail: input.email,
+      userEmail: input.email?.trim().toLowerCase(),
       content: input.message,
       isApproved: false,
       isDeleted: false,
@@ -257,6 +271,93 @@ export function prepareCommentMessage(raw: string) {
   const trimmed = raw.trim();
   if (!trimmed) return { html: "", text: "" };
   return /<[a-z]/i.test(trimmed) ? sanitizeRichText(trimmed) : { html: plainToRichHtml(trimmed), text: trimmed };
+}
+
+function toReaderComment(record: ParseRecord): ReaderComment {
+  return {
+    ...toComment(record),
+    slug: textValue(record.articleSlug),
+    isApproved: record.isApproved === true,
+    userEmail: textValue(record.userEmail).toLowerCase(),
+  };
+}
+
+export async function getCommentsForReader(email: string): Promise<ReaderComment[]> {
+  const userEmail = email.trim().toLowerCase();
+  if (!userEmail) return [];
+  const records = await adminQuery(
+    new URLSearchParams({
+      where: JSON.stringify({ $and: [{ userEmail }, { isDeleted: { $ne: true } }] }),
+      order: "-createdAt",
+      limit: "150",
+    }),
+  );
+  return records.map(toReaderComment);
+}
+
+export function buildReaderActivityStats(comments: ReaderComment[]): ReaderActivityStats {
+  const approved = comments.filter((item) => item.isApproved).length;
+  const pending = comments.length - approved;
+  const replies = comments.filter((item) => item.isReply).length;
+  const likes = comments.reduce((sum, item) => sum + item.likes, 0);
+  const dislikes = comments.reduce((sum, item) => sum + item.dislikes, 0);
+  const discussions = new Set(comments.map((item) => item.slug).filter(Boolean)).size;
+  const engagementScore = likes * 2 + approved * 3 - dislikes;
+
+  const monthly = Array.from({ length: 6 }, (_, index) => {
+    const date = new Date();
+    date.setDate(1);
+    date.setHours(0, 0, 0, 0);
+    date.setMonth(date.getMonth() - (5 - index));
+    const start = date.getTime();
+    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59, 999).getTime();
+    const count = comments.filter((item) => {
+      if (!item.createdAt) return false;
+      const stamp = Date.parse(item.createdAt);
+      return Number.isFinite(stamp) && stamp >= start && stamp <= end;
+    }).length;
+    const label = date.toLocaleDateString("en", { month: "short" });
+    return { label, count };
+  });
+
+  return { total: comments.length, approved, pending, replies, likes, dislikes, discussions, engagementScore, monthly };
+}
+
+export async function getReaderCommentById(id: string): Promise<ReaderComment | null> {
+  if (!OBJECT_ID.test(id)) return null;
+  const { url } = config();
+  const response = await fetch(`${url}/classes/${COMMENT_CLASS}/${id}`, { headers: writeHeaders(), cache: "no-store" });
+  const record = (await response.json().catch(() => ({}))) as ParseRecord;
+  if (!response.ok || !record.objectId) return null;
+  return toReaderComment(record);
+}
+
+export async function updateReaderPendingComment(id: string, email: string, message: string) {
+  if (!OBJECT_ID.test(id)) throw new Error("Invalid comment id.");
+  const existing = await getReaderCommentById(id);
+  if (!existing) throw new Error("Comment not found.");
+  if (existing.userEmail !== email.trim().toLowerCase()) throw new Error("You can only edit your own comments.");
+  if (existing.isApproved) throw new Error("Published comments cannot be edited. Contact the editorial team.");
+  const { url } = config();
+  const response = await fetch(`${url}/classes/${COMMENT_CLASS}/${id}`, {
+    method: "PUT",
+    headers: writeHeaders(),
+    body: JSON.stringify({ content: message }),
+    cache: "no-store",
+  });
+  if (!response.ok) {
+    const body = (await response.json().catch(() => ({}))) as { error?: string };
+    throw new Error(body.error || `Parse returned ${response.status}.`);
+  }
+}
+
+export async function withdrawReaderComment(id: string, email: string) {
+  if (!OBJECT_ID.test(id)) throw new Error("Invalid comment id.");
+  const existing = await getReaderCommentById(id);
+  if (!existing) throw new Error("Comment not found.");
+  if (existing.userEmail !== email.trim().toLowerCase()) throw new Error("You can only remove your own comments.");
+  if (existing.isApproved) throw new Error("Published comments cannot be removed from here.");
+  await deleteComment(id);
 }
 
 export async function voteComment(id: string, direction: "like" | "dislike") {
