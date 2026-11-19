@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { formatDate } from "@/lib/format";
 import { getApprovedQuestion } from "@/lib/questions";
-import { richTextToPlain, sanitizeRichText } from "@/lib/richtext";
+import { sanitizeRichText } from "@/lib/richtext";
 import { breadcrumbJsonLd, localeUrl, metaDescription, pageMetadata } from "@/lib/seo";
 import { PageShell } from "@/components/layout/PageShell";
 import { SiteRichContent } from "@/components/site/SiteRichContent";
@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, id } = await params;
   const question = await getApprovedQuestion(id);
   if (!question) return {};
-  const description = metaDescription(question.excerpt || richTextToPlain(sanitizeRichText(question.bodyHtml)));
+  const description = metaDescription(question.excerpt || sanitizeRichText(question.bodyHtml).text);
   return pageMetadata({ locale, path: `/questions/${id}`, title: question.title, description });
 }
 

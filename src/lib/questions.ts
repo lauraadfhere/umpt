@@ -1,6 +1,6 @@
 // Server-only visitor Q&A stored in Parse (class VisitorQuestion).
 import { config, query, textValue, writeHeaders, type ParseRecord } from "@/lib/parse";
-import { plainToRichHtml, richTextToPlain, sanitizeRichText } from "@/lib/richtext";
+import { plainToRichHtml, sanitizeRichText } from "@/lib/richtext";
 
 const CLASS = "VisitorQuestion";
 const OBJECT_ID = /^[A-Za-z0-9]{1,64}$/;
@@ -73,7 +73,7 @@ export function readQuestionInput(body: unknown): { input: QuestionInput } | { e
 }
 
 function excerptFromHtml(html: string, max = 220) {
-  const plain = richTextToPlain(sanitizeRichText(html)) || html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+  const plain = sanitizeRichText(html).text || html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
   if (plain.length <= max) return plain;
   const cut = plain.slice(0, max - 1);
   return `${cut.slice(0, Math.max(cut.lastIndexOf(" "), max - 40)).replace(/[\s,;:.–-]+$/, "")}…`;
@@ -115,7 +115,7 @@ export async function getApprovedQuestion(id: string): Promise<VisitorQuestion |
 
 export async function createVisitorQuestion(input: QuestionInput): Promise<{ id: string }> {
   const { url } = config();
-  const plain = richTextToPlain(sanitizeRichText(input.bodyHtml));
+  const plain = sanitizeRichText(input.bodyHtml).text;
   const response = await fetch(`${url}/classes/${CLASS}`, {
     method: "POST",
     headers: writeHeaders(),
