@@ -15,6 +15,7 @@ const PAGES = [
   { path: "/people", changeFrequency: "weekly", priority: 0.5 },
   { path: "/about", changeFrequency: "monthly", priority: 0.5 },
   { path: "/contact", changeFrequency: "monthly", priority: 0.5 },
+  { path: "/questions", changeFrequency: "daily", priority: 0.55 },
   { path: "/privacy", changeFrequency: "yearly", priority: 0.3 },
   { path: "/terms", changeFrequency: "yearly", priority: 0.3 },
 ] as const;

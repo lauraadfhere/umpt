@@ -27,9 +27,10 @@ type Props = {
   variant?: SubNavVariant;
   /** Pins the bar under the main header while scrolling (reading pages). */
   sticky?: boolean;
+  className?: string;
 };
 
-export function SubNav({ items, variant = "dark", sticky = true }: Props) {
+export function SubNav({ items, variant = "dark", sticky = true, className = "" }: Props) {
   const t = useTranslations("nav");
   const style = styles[variant];
   const stick = sticky ? "sticky top-[var(--sticky-subnav-top)] z-[55] shadow-[0_2px_6px_rgba(0,0,0,0.12)]" : "";

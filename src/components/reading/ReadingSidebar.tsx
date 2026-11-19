@@ -2,6 +2,8 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { PostSummary } from "@/lib/posts";
 import { SectionsNav, type SectionLink } from "@/components/reading/SectionsNav";
+import { ReadingSidebarAskQuestion, type SidebarQuestion } from "@/components/reading/ReadingSidebarAskQuestion";
+import { ReadingSidebarNewsletter } from "@/components/reading/ReadingSidebarNewsletter";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { IconArrowRight } from "@/components/ui/Icons";
 
@@ -11,6 +13,7 @@ type Props = {
   previous: PostSummary | null;
   next: PostSummary | null;
   sections: SectionLink[];
+  latestQuestions?: SidebarQuestion[];
 };
 
 function Step({ post, label, direction }: { post: PostSummary | null; label: string; direction: "previous" | "next" }) {
@@ -46,7 +49,7 @@ export function PostAdjacentNav({ previous, next }: Pick<Props, "previous" | "ne
   );
 }
 
-export function ReadingSidebar({ title, year, previous, next, sections }: Props) {
+export function ReadingSidebar({ title, year, previous, next, sections, latestQuestions = [] }: Props) {
   const t = useTranslations("reading");
 
   return (
@@ -65,6 +68,8 @@ export function ReadingSidebar({ title, year, previous, next, sections }: Props)
         </div>
       </div>
       {sections.length > 0 && <SectionsNav items={sections} label={t("sectionsNav")} />}
+      <ReadingSidebarAskQuestion latest={latestQuestions} />
+      <ReadingSidebarNewsletter />
     </aside>
   );
 }

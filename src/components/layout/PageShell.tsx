@@ -24,6 +24,8 @@ type Props = {
   applyHeroContext?: boolean;
   /** Replaces the default SubNav row (e.g. dashboard grouped nav). */
   subNavSlot?: React.ReactNode;
+  /** Desktop-only: collapses the header to logo + italic title while scrolling (post reading). */
+  readingStickyTitle?: string;
   children: React.ReactNode;
 };
 
@@ -36,6 +38,7 @@ export async function PageShell({
   flush = false,
   applyHeroContext = true,
   subNavSlot,
+  readingStickyTitle,
   children,
 }: Props) {
   const [signedIn, logo, heroContext] = await Promise.all([
@@ -46,7 +49,13 @@ export async function PageShell({
 
   return (
     <>
-      <SiteHeader active={active} signedIn={signedIn} logo={logo} hideMobileSectionBar={Boolean(subNav || subNavSlot)} />
+      <SiteHeader
+        active={active}
+        signedIn={signedIn}
+        logo={logo}
+        hideMobileSectionBar={Boolean(subNav || subNavSlot)}
+        readingTitle={readingStickyTitle}
+      />
       {subNavSlot ?? (subNav ? <SubNav items={subNav} variant={subNavVariant} sticky /> : null)}
       {hero && <HeroBanner {...hero} context={heroContext} />}
       <Breadcrumbs items={breadcrumbs} />

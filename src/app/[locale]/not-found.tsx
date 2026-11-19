@@ -22,6 +22,7 @@ const LINKS = [
   { key: "home", href: "/" },
   { key: "posts", href: "/posts" },
   { key: "contact", href: "/contact" },
+  { key: "questions", href: "/questions" },
   { key: "about", href: "/about" },
   { key: "proceedings", href: "/proceedings" },
   { key: "books", href: "/books" },

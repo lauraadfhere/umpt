@@ -86,6 +86,7 @@ export function SiteFooter({ logo = DEFAULT_LOGO_SETTINGS }: { logo?: LogoSettin
           <ul className="space-y-1.5">
             <li><Link href="/about" className={linkClass}>{t("footer.about")}</Link></li>
             <li><Link href="/contact" className={linkClass}>{t("footer.contact")}</Link></li>
+            <li><Link href="/questions" className={linkClass}>{t("footer.questions")}</Link></li>
             <li><Link href="/privacy" className={linkClass}>{t("footer.privacy")}</Link></li>
             <li><Link href="/terms" className={linkClass}>{t("footer.terms")}</Link></li>
             <li><Link href="/login" className={linkClass}>{t("footer.signIn")}</Link></li>

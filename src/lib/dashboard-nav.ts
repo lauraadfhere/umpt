@@ -5,6 +5,7 @@ export type DashboardTab =
   | "projects"
   | "pages"
   | "comments"
+  | "questions"
   | "reviews"
   | "contacts"
   | "subscribers"
@@ -22,6 +23,7 @@ export const DASHBOARD_TAB_PATHS: Record<DashboardTab, string> = {
   projects: "/dashboard/projects",
   pages: "/dashboard/pages",
   comments: "/dashboard/comments",
+  questions: "/dashboard/questions",
   reviews: "/dashboard/reviews",
   contacts: "/dashboard/contacts",
   subscribers: "/dashboard/subscribers",
@@ -40,7 +42,7 @@ export const DASHBOARD_TABS: { key: DashboardTab; href: string }[] = (
 
 export const DASHBOARD_PRIMARY_TABS: DashboardTab[] = ["overview", "posts", "books", "projects", "pages"];
 
-export const DASHBOARD_INBOX_TABS: DashboardTab[] = ["comments", "reviews", "contacts", "subscribers"];
+export const DASHBOARD_INBOX_TABS: DashboardTab[] = ["comments", "questions", "reviews", "contacts", "subscribers"];
 
 export const DASHBOARD_SETTINGS_TABS: DashboardTab[] = ["profile", "logo", "favicon", "home", "heroContext", "uploads"];
 

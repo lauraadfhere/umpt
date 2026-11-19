@@ -7,6 +7,7 @@ import { routing } from "@/i18n/routing";
 import { formatDate, yearOf } from "@/lib/format";
 import { ABSTRACT_ID, bodyToPlain, INTRO_ID, parsePostBody } from "@/lib/post-sections";
 import { getPost, type Post } from "@/lib/posts";
+import { getApprovedQuestions } from "@/lib/questions";
 import { getProfileSettings } from "@/lib/profile";
 import { namesMatch } from "@/lib/profile-config";
 import { articleJsonLd, breadcrumbJsonLd, localeUrl, metaDescription, pageMetadata } from "@/lib/seo";
@@ -17,6 +18,8 @@ import { PostComments } from "@/components/reading/PostComments";
 import { PostShareBar } from "@/components/reading/PostShareBar";
 import { PostTableOfContents } from "@/components/reading/PostTableOfContents";
 import { ReadingProgressBar } from "@/components/reading/ReadingProgressBar";
+import { ReadingSidebarAskQuestion } from "@/components/reading/ReadingSidebarAskQuestion";
+import { ReadingSidebarNewsletter } from "@/components/reading/ReadingSidebarNewsletter";
 import { PostAdjacentNav, ReadingSidebar } from "@/components/reading/ReadingSidebar";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { AuthorAvatar } from "@/components/ui/AuthorAvatar";
@@ -95,6 +98,9 @@ export default async function PostPage({ params }: Props) {
     ...(post.excerpt ? [{ id: ABSTRACT_ID, title: t("abstract") }] : []),
     ...body.map(({ id, title }) => ({ id, title: title ?? (id === INTRO_ID ? t("introduction") : t("fullText")) })),
   ];
+  const latestQuestions = (
+    await getApprovedQuestions(6).catch(() => [])
+  ).map((item) => ({ id: item.id, title: item.title, answerCount: item.answerCount }));
   const date = formatDate(post.publishedAt, locale);
   const untranslated = post.language !== locale;
   // Text in another language keeps its own language tag and reading direction.
@@ -112,6 +118,7 @@ export default async function PostPage({ params }: Props) {
         { label: t("tabs.people"), href: "/people" },
       ]}
       breadcrumbs={[{ label: tCommon("home"), href: "/" }, { label: tPosts("heroTitle"), href: "/posts" }, { label: post.title }]}
+      readingStickyTitle={post.title}
     >
       <JsonLd
         data={articleJsonLd({
@@ -139,11 +146,22 @@ export default async function PostPage({ params }: Props) {
       <div className="relative overflow-x-clip">
         <Watermark />
         <div className="relative mx-auto grid w-full max-w-[1200px] gap-x-9 gap-y-6 px-4 sm:px-6 md:grid-cols-[214px_minmax(0,1fr)] md:gap-y-8">
-          <ReadingSidebar title={post.title} year={yearOf(post.publishedAt)} previous={previous} next={next} sections={sections} />
+          <ReadingSidebar
+            title={post.title}
+            year={yearOf(post.publishedAt)}
+            previous={previous}
+            next={next}
+            sections={sections}
+            latestQuestions={latestQuestions}
+          />
 
           <article className="min-w-0 w-full">
             <PostReadingShell>
             <PostTableOfContents sections={sections} />
+            <div className="mb-6 overflow-hidden border border-rule bg-panel md:hidden">
+              <ReadingSidebarAskQuestion latest={latestQuestions} />
+              <ReadingSidebarNewsletter />
+            </div>
             <PostAdjacentNav previous={previous} next={next} />
             <header className="mb-6 border-b border-rule pb-4">
               {post.category && <p className="text-[12px] font-semibold tracking-wide text-accent uppercase">{post.category}</p>}

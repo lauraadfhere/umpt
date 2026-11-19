@@ -50,20 +50,28 @@ export function SiteHeader({
   signedIn = false,
   logo,
   hideMobileSectionBar = false,
+  readingTitle,
 }: {
   active?: NavKey;
   signedIn?: boolean;
   logo?: LogoSettings;
   /** Reading pages use a sticky SubNav instead of the gray section strip. */
   hideMobileSectionBar?: boolean;
+  /** Desktop-only: when set, scrolling collapses the header to logo + italic title + icons. */
+  readingTitle?: string;
 }) {
   const t = useTranslations();
   const locale = useLocale();
   const menuId = useId();
   const sectionId = useId();
+  const desktopMenuId = useId();
+  const desktopSearchId = useId();
   const [menuOpen, setMenuOpen] = useState(false);
   const [sectionOpen, setSectionOpen] = useState(false);
   const [readerSignedIn, setReaderSignedIn] = useState(false);
+  const [readingCompact, setReadingCompact] = useState(false);
+  const [desktopNavOpen, setDesktopNavOpen] = useState(false);
+  const [desktopSearchOpen, setDesktopSearchOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -74,6 +82,54 @@ export function SiteHeader({
       })
       .catch(() => setReaderSignedIn(false));
   }, []);
+
+  useEffect(() => {
+    if (!readingTitle) {
+      setReadingCompact(false);
+      document.documentElement.style.removeProperty("--sticky-site-header");
+      return;
+    }
+    function update() {
+      const compact = window.scrollY > 72 && window.matchMedia("(min-width: 768px)").matches;
+      setReadingCompact(compact);
+      // Compact bar is one row (~52px); keep SubNav flush under it (no white gap).
+      document.documentElement.style.setProperty("--sticky-site-header", compact ? "3.25rem" : "6rem");
+      if (!compact) {
+        setDesktopNavOpen(false);
+        setDesktopSearchOpen(false);
+      }
+    }
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+      document.documentElement.style.removeProperty("--sticky-site-header");
+    };
+  }, [readingTitle]);
+
+  useEffect(() => {
+    if (!desktopNavOpen && !desktopSearchOpen) return;
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setDesktopNavOpen(false);
+        setDesktopSearchOpen(false);
+      }
+    }
+    function onPointer(event: MouseEvent) {
+      if (!headerRef.current?.contains(event.target as Node)) {
+        setDesktopNavOpen(false);
+        setDesktopSearchOpen(false);
+      }
+    }
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("mousedown", onPointer);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("mousedown", onPointer);
+    };
+  }, [desktopNavOpen, desktopSearchOpen]);
 
   const sectionLabel = active ? t(`nav.${active}`) : t("nav.mobileHome");
 
@@ -196,57 +252,152 @@ export function SiteHeader({
         )}
         </div>
 
-      {/* Desktop: original chrome row */}
-      <div className="hidden min-h-[50px] items-stretch justify-between border-b border-white/10 ps-3 md:flex">
-        <div className="flex items-center py-2">
-          <BrandMark logo={logo} />
-        </div>
-        <div className="flex items-stretch text-[13px]">
-          <div className="flex items-center px-3">
-            <SubscribeUpgrade />
+      {/* Desktop: compact reading bar (post pages, after scroll) — mobile untouched */}
+      {readingTitle && readingCompact ? (
+        <div className="relative hidden min-h-[52px] items-stretch border-b border-white/10 md:flex">
+          <div className="flex min-w-0 flex-1 items-center gap-4 px-3 py-2">
+            <div className="shrink-0">
+              <BrandMark logo={logo} />
+            </div>
+            <p className="min-w-0 flex-1 truncate text-[15px] italic leading-snug text-white/95" title={readingTitle}>
+              {readingTitle}
+            </p>
           </div>
-          <div className="flex items-center border-s border-white/10 px-3">
-            <LanguageSwitcher />
-          </div>
-          {authLinks}
-        </div>
-      </div>
-
-      <div className="hidden flex-wrap items-center justify-between gap-3 px-3 py-2 md:flex">
-        <nav aria-label={t("nav.label")} className="flex flex-wrap gap-x-6 gap-y-1 text-[15px] font-medium">
-          {NAV.map(({ key, href }) => (
-            <Link
-              key={key}
-              href={href}
-              aria-current={active === key ? "page" : undefined}
-              className={`py-1.5 hover:underline ${active === key ? "underline decoration-2 underline-offset-[10px]" : ""}`}
+          <div className="flex shrink-0 items-stretch text-[13px]">
+            <button
+              type="button"
+              className="grid w-11 place-items-center border-s border-white/10 hover:bg-white/5"
+              aria-expanded={desktopSearchOpen}
+              aria-controls={desktopSearchId}
+              aria-label={t("search.submit")}
+              onClick={() => {
+                setDesktopNavOpen(false);
+                setDesktopSearchOpen((value) => !value);
+              }}
             >
-              {t(`nav.${key}`)}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="flex items-center gap-4">
-          <form action={`/${locale}/proceedings`} className="flex h-[30px]" role="search">
-            <label className="sr-only" htmlFor="global-search">
-              {t("search.placeholder")}
-            </label>
-            <input
-              id="global-search"
-              name="q"
-              type="search"
-              placeholder={t("search.placeholder")}
-              className="w-[180px] bg-chrome-field px-2 text-[13px] text-white outline-none placeholder:text-white/85 focus:bg-[#555] lg:w-[180px]"
-            />
-            <button type="submit" className="grid w-[34px] place-items-center bg-chrome-button hover:bg-[#6a6a6a]" aria-label={t("search.submit")}>
               <IconSearch className="size-4" />
             </button>
-          </form>
-          <Link href="/proceedings" className="text-[12px] hover:underline">
-            {t("search.advanced")}
-          </Link>
+            <button
+              type="button"
+              className="grid w-11 place-items-center border-s border-white/10 hover:bg-white/5"
+              aria-expanded={desktopNavOpen}
+              aria-controls={desktopMenuId}
+              aria-label={desktopNavOpen ? t("nav.menuClose") : t("nav.menuOpen")}
+              onClick={() => {
+                setDesktopSearchOpen(false);
+                setDesktopNavOpen((value) => !value);
+              }}
+            >
+              <BurgerIcon open={desktopNavOpen} />
+            </button>
+            <div className="flex items-center border-s border-white/10 px-3">
+              <LanguageSwitcher />
+            </div>
+            {authLinks}
+          </div>
+
+          {desktopSearchOpen ? (
+            <form
+              id={desktopSearchId}
+              action={`/${locale}/proceedings`}
+              role="search"
+              className="absolute inset-x-0 top-full z-50 flex h-11 border-b border-white/15 bg-black px-3 shadow-lg"
+            >
+              <label className="sr-only" htmlFor="reading-sticky-search">
+                {t("search.placeholder")}
+              </label>
+              <input
+                id="reading-sticky-search"
+                name="q"
+                type="search"
+                autoFocus
+                placeholder={t("search.placeholder")}
+                className="min-w-0 flex-1 bg-transparent px-2 text-[14px] text-white outline-none placeholder:text-white/70"
+              />
+              <button type="submit" className="grid w-11 place-items-center text-white hover:bg-white/5" aria-label={t("search.submit")}>
+                <IconSearch className="size-4" />
+              </button>
+            </form>
+          ) : null}
+
+          {desktopNavOpen ? (
+            <nav
+              id={desktopMenuId}
+              aria-label={t("nav.label")}
+              className="absolute inset-x-0 top-full z-50 max-h-[min(70vh,28rem)] overflow-y-auto border-b border-white/15 bg-black shadow-lg"
+            >
+              <ul className="mx-auto flex max-w-[1200px] flex-wrap gap-x-6 gap-y-1 px-4 py-3 text-[15px] font-medium">
+                {NAV.map(({ key, href }) => (
+                  <li key={key}>
+                    <Link
+                      href={href}
+                      onClick={() => setDesktopNavOpen(false)}
+                      aria-current={active === key ? "page" : undefined}
+                      className={`inline-block py-2 hover:underline ${active === key ? "underline decoration-2 underline-offset-8" : ""}`}
+                    >
+                      {t(`nav.${key}`)}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ) : null}
         </div>
-        </div>
+      ) : (
+        <>
+          {/* Desktop: original chrome row */}
+          <div className="hidden min-h-[50px] items-stretch justify-between border-b border-white/10 ps-3 md:flex">
+            <div className="flex items-center py-2">
+              <BrandMark logo={logo} />
+            </div>
+            <div className="flex items-stretch text-[13px]">
+              <div className="flex items-center px-3">
+                <SubscribeUpgrade />
+              </div>
+              <div className="flex items-center border-s border-white/10 px-3">
+                <LanguageSwitcher />
+              </div>
+              {authLinks}
+            </div>
+          </div>
+
+          <div className="hidden flex-wrap items-center justify-between gap-3 px-3 py-2 md:flex">
+            <nav aria-label={t("nav.label")} className="flex flex-wrap gap-x-6 gap-y-1 text-[15px] font-medium">
+              {NAV.map(({ key, href }) => (
+                <Link
+                  key={key}
+                  href={href}
+                  aria-current={active === key ? "page" : undefined}
+                  className={`py-1.5 hover:underline ${active === key ? "underline decoration-2 underline-offset-[10px]" : ""}`}
+                >
+                  {t(`nav.${key}`)}
+                </Link>
+              ))}
+            </nav>
+
+            <div className="flex items-center gap-4">
+              <form action={`/${locale}/proceedings`} className="flex h-[30px]" role="search">
+                <label className="sr-only" htmlFor="global-search">
+                  {t("search.placeholder")}
+                </label>
+                <input
+                  id="global-search"
+                  name="q"
+                  type="search"
+                  placeholder={t("search.placeholder")}
+                  className="w-[180px] bg-chrome-field px-2 text-[13px] text-white outline-none placeholder:text-white/85 focus:bg-[#555] lg:w-[180px]"
+                />
+                <button type="submit" className="grid w-[34px] place-items-center bg-chrome-button hover:bg-[#6a6a6a]" aria-label={t("search.submit")}>
+                  <IconSearch className="size-4" />
+                </button>
+              </form>
+              <Link href="/proceedings" className="text-[12px] hover:underline">
+                {t("search.advanced")}
+              </Link>
+            </div>
+          </div>
+        </>
+      )}
 
       {menuOpen && (
         <>

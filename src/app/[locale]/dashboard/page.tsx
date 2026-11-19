@@ -7,6 +7,7 @@ import { getAdminProjects } from "@/lib/admin-projects";
 import { getAdminPostRows } from "@/lib/admin-posts";
 import { getCommentsForModeration } from "@/lib/comments";
 import { getContactMessages } from "@/lib/contact";
+import { getQuestionsForModeration } from "@/lib/questions";
 import { getSubscribers } from "@/lib/subscribers";
 import { formatDate } from "@/lib/format";
 import { getBackendStatus } from "@/lib/parse";
@@ -109,12 +110,13 @@ export default async function DashboardPage({ params }: Props) {
   await requireAdmin(locale);
 
   const t = await getTranslations("dashboard");
-  const [backend, posts, books, projects, comments, contacts, subscribers, pages] = await Promise.all([
+  const [backend, posts, books, projects, comments, visitorQuestions, contacts, subscribers, pages] = await Promise.all([
     getBackendStatus(),
     getAdminPostRows().catch(() => []),
     getAdminBooks().catch(() => []),
     getAdminProjects().catch(() => []),
     getCommentsForModeration().catch(() => []),
+    getQuestionsForModeration().catch(() => []),
     getContactMessages().catch(() => []),
     getSubscribers().catch(() => []),
     getManagedPages().catch(() => []),
@@ -123,11 +125,12 @@ export default async function DashboardPage({ params }: Props) {
   const published = posts.filter((post) => post.status === "published").length;
   const drafts = posts.length - published;
   const pendingComments = comments.filter((comment) => !comment.isApproved).length;
+  const pendingQuestions = visitorQuestions.filter((item) => !item.isApproved).length;
   const newContacts = contacts.filter((message) => !message.isHandled).length;
   const publishedPages = pages.filter((page) => page.id && page.status === "published").length;
   const recentPosts = posts.slice(0, 6);
   const recentContacts = contacts.slice(0, 5);
-  const attention = pendingComments + newContacts;
+  const attention = pendingComments + pendingQuestions + newContacts;
 
   const modules: ModuleCard[] = [
     {
@@ -174,6 +177,16 @@ export default async function DashboardPage({ params }: Props) {
       count: String(pendingComments),
       note: t("modules.commentsNote"),
       tone: pendingComments ? "alert" : "ok",
+      icon: <IconMessage className="size-5" />,
+    },
+    {
+      key: "questions",
+      href: "/dashboard/questions",
+      actionHref: "/dashboard/questions?status=pending",
+      actionKey: "reviewQuestions",
+      count: String(pendingQuestions),
+      note: t("modules.questionsNote"),
+      tone: pendingQuestions ? "alert" : "ok",
       icon: <IconMessage className="size-5" />,
     },
     {
