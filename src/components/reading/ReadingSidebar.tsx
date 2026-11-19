@@ -36,11 +36,21 @@ function Step({ post, label, direction }: { post: PostSummary | null; label: str
   );
 }
 
+export function PostAdjacentNav({ previous, next }: Pick<Props, "previous" | "next">) {
+  const t = useTranslations("reading");
+  return (
+    <div className="mb-4 flex items-center justify-between gap-3 border-b border-rule pb-4 text-[13px] md:hidden">
+      <Step post={previous} label={t("previous")} direction="previous" />
+      <Step post={next} label={t("next")} direction="next" />
+    </div>
+  );
+}
+
 export function ReadingSidebar({ title, year, previous, next, sections }: Props) {
   const t = useTranslations("reading");
 
   return (
-    <aside aria-label={t("sections")} className="self-start bg-panel">
+    <aside aria-label={t("sections")} className="hidden self-start bg-panel md:block">
       <div className="bg-panel-head px-3 py-2.5">
         <SectionTitle as="p" size="sm" tone="accent">
           {t("tableOfContents")}

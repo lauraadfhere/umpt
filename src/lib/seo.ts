@@ -117,6 +117,19 @@ export function websiteJsonLd(locale: string, description: string) {
   };
 }
 
+export function contactPageJsonLd(locale: string, url: string, title: string, description: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: title,
+    url,
+    description: metaDescription(description),
+    inLanguage: locale,
+    isPartOf: { "@type": "WebSite", name: SITE_NAME, url: localeUrl(locale) },
+    publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+  };
+}
+
 export function breadcrumbJsonLd(items: { name: string; url: string }[]) {
   return {
     "@context": "https://schema.org",

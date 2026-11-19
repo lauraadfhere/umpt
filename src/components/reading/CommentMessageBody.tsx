@@ -48,6 +48,23 @@ function renderNodes(nodes: RichNode[]) {
         );
       case "li":
         return <li key={index}>{kids}</li>;
+      case "img":
+        return element.src ? (
+          // eslint-disable-next-line @next/next/no-img-element -- comment images from public uploads
+          <img key={index} src={element.src} alt={element.alt ?? ""} loading="lazy" decoding="async" className="mt-2 max-h-[360px] w-auto max-w-full rounded-sm border border-rule" />
+        ) : null;
+      case "figure":
+        return (
+          <figure key={index} className="mt-2 [&>img]:mt-0">
+            {kids}
+          </figure>
+        );
+      case "figcaption":
+        return (
+          <figcaption key={index} className="mt-1 text-[12px] italic text-muted">
+            {kids}
+          </figcaption>
+        );
       default:
         return <span key={index}>{kids}</span>;
     }

@@ -37,13 +37,15 @@ export function toEmbedUrl(input: string): string | null {
 
 type Props = {
   id: string;
-  label: string;
+  label?: string;
   placeholder: string;
   value: string;
   onChange: (html: string) => void;
+  size?: "default" | "compact";
+  uploadImage?: (file: File) => Promise<string>;
 };
 
-export function RichTextEditor({ id, label, placeholder, value, onChange }: Props) {
+export function RichTextEditor({ id, label, placeholder, value, onChange, size = "default", uploadImage }: Props) {
   const t = useTranslations("dashboard.editor");
   const editor = useRef<HTMLDivElement>(null);
   const fileInput = useRef<HTMLInputElement>(null);
@@ -71,6 +73,7 @@ export function RichTextEditor({ id, label, placeholder, value, onChange }: Prop
   }
 
   async function uploadFile(file: File) {
+    if (uploadImage) return uploadImage(file);
     const { uploadAdminImage } = await import("@/lib/client-upload");
     return uploadAdminImage(file);
   }
@@ -173,12 +176,19 @@ export function RichTextEditor({ id, label, placeholder, value, onChange }: Prop
     sync();
   }
 
+  const editorClass =
+    size === "compact"
+      ? "rich-editor min-h-[7.5rem] w-full px-3 py-2.5 text-[18px] leading-[1.55] text-text outline-none empty:before:text-muted empty:before:content-[attr(data-placeholder)] sm:min-h-24 sm:text-[15px]"
+      : "rich-editor min-h-44 w-full px-3 py-3 text-[15px] leading-7 text-text outline-none empty:before:text-muted empty:before:content-[attr(data-placeholder)]";
+
   return (
     <div>
-      <label className="mb-1 block text-[13px] font-semibold text-text" htmlFor={id}>
-        {label}
-      </label>
-      <div className="mt-1 overflow-hidden border border-rule bg-white focus-within:border-link">
+      {label ? (
+        <label className="mb-1 block text-[13px] font-semibold text-text" htmlFor={id}>
+          {label}
+        </label>
+      ) : null}
+      <div className={`overflow-hidden border border-rule bg-white focus-within:border-link ${label ? "mt-1" : ""}`}>
         <div role="toolbar" aria-label={t("toolbar")} className="flex flex-wrap items-center gap-y-1 border-b border-rule bg-panel-head px-2 py-1.5">
           {groups.map((group, groupIndex) => (
             <div key={groupIndex} className="flex items-center gap-0.5 border-e border-rule px-1.5 last:border-e-0">
@@ -205,11 +215,11 @@ export function RichTextEditor({ id, label, placeholder, value, onChange }: Prop
           suppressContentEditableWarning
           role="textbox"
           aria-multiline="true"
-          aria-label={label}
+          aria-label={label ?? placeholder}
           data-placeholder={placeholder}
           onInput={sync}
           onPaste={paste}
-          className="rich-editor min-h-44 w-full px-3 py-3 text-[15px] leading-7 text-text outline-none empty:before:text-muted empty:before:content-[attr(data-placeholder)]"
+          className={editorClass}
         />
         {notice ? (
           <p role="alert" className="border-t border-new/30 bg-[#fdf2f2] px-3 py-2 text-[13px] text-new">

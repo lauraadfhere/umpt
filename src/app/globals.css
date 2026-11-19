@@ -51,6 +51,13 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/* Slightly larger UI on phones (~10% vs desktop root sizing). */
+@media (max-width: 767px) {
+  html {
+    font-size: 110%;
+  }
+}
+
 body {
   background: #ffffff;
   color: var(--color-text);

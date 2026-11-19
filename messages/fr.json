@@ -855,9 +855,12 @@
       "email": "E-mail",
       "subject": "Objet",
       "message": "Message",
+      "messagePlaceholder": "Rédigez votre message. Vous pouvez formater le texte et joindre des images.",
       "submit": "Envoyer le message",
       "sending": "Envoi…",
-      "saved": "Merci. Votre message a été envoyé.",
+      "savedTitle": "Message envoyé",
+      "saved": "Merci. Votre message a été envoyé. Nous vous répondrons dès que possible.",
+      "sendAnother": "Envoyer un autre message",
       "saveError": "Impossible d'envoyer le message."
     },
     "privacy": {
@@ -966,7 +969,12 @@
       "unavailable": "Les commentaires n'ont pas pu être chargés.",
       "loading": "Chargement des commentaires…",
       "empty": "Aucun commentaire pour l'instant. Soyez le premier.",
-      "replyBadge": "Réponse"
+      "replyBadge": "Réponse",
+      "reply": "Répondre",
+      "replyPlaceholder": "Rédigez votre réponse…",
+      "replySubmit": "Publier la réponse",
+      "replySaved": "Merci. Votre réponse a été envoyée pour examen.",
+      "cancelReply": "Annuler"
     }
   },
   "notFound": {

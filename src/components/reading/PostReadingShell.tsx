@@ -233,7 +233,10 @@ export function PostReadingShell({ children }: { children: ReactNode }) {
         className={`reading-surface transition-colors ${theme === "dark" ? "rounded-2xl bg-[#1a1a1a] px-3 py-2 sm:px-4" : ""}`}
       >
         <ReadingOptionsMenu />
-        <div className={value.contentMaxClass} style={{ fontSize: `${TEXT_STEPS[textIndex]}px` }}>
+        <div
+          className={`w-full min-w-0 max-md:max-w-none ${value.contentMaxClass}`}
+          style={{ fontSize: `${TEXT_STEPS[textIndex]}px` }}
+        >
           {children}
         </div>
       </div>

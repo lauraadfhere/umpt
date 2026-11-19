@@ -37,7 +37,7 @@ export default async function PostsPage({ params }: Props) {
           { name: t("heroTitle"), url: localeUrl(locale, "/posts") },
         ])}
       />
-      <div className="relative mx-auto max-w-[1200px] overflow-hidden px-6">
+      <div className="relative mx-auto max-w-[1200px] px-4 sm:px-6">
         <SectionTitle className="mb-5">{t("listTitle")}</SectionTitle>
         {posts === null ? (
           <p role="status" className="border-s-4 border-new bg-panel px-4 py-3 text-[14px] text-text">
@@ -46,7 +46,7 @@ export default async function PostsPage({ params }: Props) {
         ) : posts.length === 0 ? (
           <p className="text-[15px] text-muted">{t("empty")}</p>
         ) : (
-          <div className="max-w-[860px]">
+          <div className="max-w-full md:max-w-[860px]">
             <p className="mb-2 text-[14px] text-muted">{t("count", { count: posts.length })}</p>
             <PostList posts={posts} />
           </div>

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { plainParagraphsToHtml, resolveSitePage } from "@/lib/public-pages";
 import type { ManagedPageSlug } from "@/lib/site-pages";
-import { breadcrumbJsonLd, localeUrl, pageMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd, contactPageJsonLd, localeUrl, pageMetadata } from "@/lib/seo";
 import { PageShell } from "@/components/layout/PageShell";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { ContactForm } from "@/components/site/ContactForm";
@@ -46,6 +46,9 @@ export async function ManagedSitePage({ slug, params }: { slug: ManagedPageSlug;
           { name: page.title, url: localeUrl(locale, path) },
         ])}
       />
+      {slug === "contact" ? (
+        <JsonLd data={contactPageJsonLd(locale, localeUrl(locale, path), page.title, page.seoDescription)} />
+      ) : null}
       <div className="relative mx-auto max-w-[1200px] overflow-hidden px-6 pb-12">
         <SiteRichContent html={page.contentHtml} />
         {slug === "contact" ? <ContactForm /> : null}

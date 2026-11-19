@@ -156,8 +156,29 @@ export async function seedMockCommentsForSlug(
   return { created, existingRoots: roots.length };
 }
 
-export async function createComment(input: { slug: string; postId?: string; name: string; email?: string; message: string }) {
+export async function createComment(input: {
+  slug: string;
+  postId?: string;
+  name: string;
+  email?: string;
+  message: string;
+  parentId?: string;
+}) {
   const { url, appId, restKey } = config();
+  let parentId: string | undefined;
+  let isReply = false;
+
+  if (input.parentId) {
+    if (!OBJECT_ID.test(input.parentId)) throw new Error("Invalid parent comment.");
+    const parentResponse = await fetch(`${url}/classes/${COMMENT_CLASS}/${input.parentId}`, { headers: writeHeaders(), cache: "no-store" });
+    const parent = (await parentResponse.json().catch(() => ({}))) as ParseRecord & { error?: string };
+    if (!parentResponse.ok || !parent.objectId) throw new Error(parent.error || "That comment no longer exists.");
+    if (parent.isApproved !== true) throw new Error("You can only reply to an approved comment.");
+    if (textValue(parent.articleSlug) !== input.slug) throw new Error("Reply does not match this post.");
+    parentId = input.parentId;
+    isReply = true;
+  }
+
   const response = await fetch(`${url}/classes/${COMMENT_CLASS}`, {
     method: "POST",
     headers: {
@@ -168,6 +189,7 @@ export async function createComment(input: { slug: string; postId?: string; name
     body: JSON.stringify({
       articleSlug: input.slug,
       articleId: input.postId,
+      ...(parentId ? { parentId } : {}),
       userName: input.name,
       userEmail: input.email?.trim().toLowerCase(),
       content: input.message,
@@ -175,7 +197,7 @@ export async function createComment(input: { slug: string; postId?: string; name
       isDeleted: false,
       likes: 0,
       dislikes: 0,
-      isReply: false,
+      isReply,
       replyCount: 0,
     }),
     cache: "no-store",

@@ -3,7 +3,7 @@
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { CompactRichTextEditor } from "@/components/reading/CompactRichTextEditor";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { parseRichText, richTextToPlain } from "@/lib/richtext";
 
 function messageText(html: string) {
@@ -55,7 +55,7 @@ export function CommentReply({ id }: { id: string }) {
 
   return (
     <div className="mt-3 w-full space-y-2">
-      <CompactRichTextEditor id={`admin-reply-${id}`} placeholder={t("replyPlaceholder")} value={message} onChange={setMessage} />
+      <RichTextEditor id={`admin-reply-${id}`} placeholder={t("replyPlaceholder")} value={message} onChange={setMessage} size="compact" />
       {error && (
         <p role="alert" className="text-[13px] text-new">
           {error}

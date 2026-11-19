@@ -61,3 +61,15 @@ export async function uploadAdminImage(file: File): Promise<string> {
   if (!response.ok || !data.url) throw new Error(data.error || "Upload failed.");
   return data.url;
 }
+
+export async function uploadPublicImage(file: File): Promise<string> {
+  const { body, contentType } = await prepareImageForUpload(file);
+  const response = await fetch("/api/public/uploads", {
+    method: "POST",
+    headers: { "Content-Type": contentType },
+    body,
+  });
+  const data = (await response.json().catch(() => ({}))) as { url?: string; error?: string };
+  if (!response.ok || !data.url) throw new Error(data.error || "Upload failed.");
+  return data.url;
+}

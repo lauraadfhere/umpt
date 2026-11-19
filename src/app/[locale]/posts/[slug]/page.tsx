@@ -17,7 +17,7 @@ import { PostComments } from "@/components/reading/PostComments";
 import { PostShareBar } from "@/components/reading/PostShareBar";
 import { PostTableOfContents } from "@/components/reading/PostTableOfContents";
 import { ReadingProgressBar } from "@/components/reading/ReadingProgressBar";
-import { ReadingSidebar } from "@/components/reading/ReadingSidebar";
+import { PostAdjacentNav, ReadingSidebar } from "@/components/reading/ReadingSidebar";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { AuthorAvatar } from "@/components/ui/AuthorAvatar";
 
@@ -62,7 +62,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 function Watermark() {
   return (
-    <svg className="pointer-events-none absolute end-0 top-0 h-[420px] w-[380px] rtl:-scale-x-100" viewBox="0 0 380 420" aria-hidden>
+    <svg className="pointer-events-none absolute end-0 top-0 hidden h-[420px] w-[380px] md:block rtl:-scale-x-100" viewBox="0 0 380 420" aria-hidden>
       <path d="M380 0 L380 300 L150 0 Z" fill="#f7f7f7" />
       <path d="M380 150 L380 420 L210 290 Z" fill="#f9f9f9" />
     </svg>
@@ -136,17 +136,18 @@ export default async function PostPage({ params }: Props) {
         ])}
       />
       <ReadingProgressBar />
-      <div className="relative">
+      <div className="relative overflow-x-clip">
         <Watermark />
-        <div className="relative mx-auto grid max-w-[1200px] gap-x-9 gap-y-8 px-6 md:grid-cols-[214px_minmax(0,1fr)]">
+        <div className="relative mx-auto grid w-full max-w-[1200px] gap-x-9 gap-y-6 px-4 sm:px-6 md:grid-cols-[214px_minmax(0,1fr)] md:gap-y-8">
           <ReadingSidebar title={post.title} year={yearOf(post.publishedAt)} previous={previous} next={next} sections={sections} />
 
-          <article>
+          <article className="min-w-0 w-full">
             <PostReadingShell>
             <PostTableOfContents sections={sections} />
+            <PostAdjacentNav previous={previous} next={next} />
             <header className="mb-6 border-b border-rule pb-4">
               {post.category && <p className="text-[12px] font-semibold tracking-wide text-accent uppercase">{post.category}</p>}
-              <h1 {...textProps} className="mt-1.5 text-[30px] leading-[1.2] font-semibold text-text">{post.title}</h1>
+              <h1 {...textProps} className="mt-1.5 text-[24px] leading-[1.25] font-semibold text-text sm:text-[30px] sm:leading-[1.2]">{post.title}</h1>
               {bylines.length > 0 && (
                 <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-[14px] text-muted">
                   {bylines.map((author) => (

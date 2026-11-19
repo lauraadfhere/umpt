@@ -884,9 +884,12 @@
       "email": "Email",
       "subject": "Subject",
       "message": "Message",
+      "messagePlaceholder": "Write your message. You can format text and attach images.",
       "submit": "Send message",
       "sending": "Sending…",
-      "saved": "Thanks. Your message was sent.",
+      "savedTitle": "Message sent",
+      "saved": "Thanks. Your message was sent. We will get back to you as soon as we can.",
+      "sendAnother": "Send another message",
       "saveError": "Unable to send the message."
     },
     "privacy": {
@@ -1009,7 +1012,12 @@
       "unavailable": "Comments could not be loaded.",
       "loading": "Loading comments…",
       "empty": "No comments yet. Be the first to leave one.",
-      "replyBadge": "Reply"
+      "replyBadge": "Reply",
+      "reply": "Reply",
+      "replyPlaceholder": "Write your reply…",
+      "replySubmit": "Post reply",
+      "replySaved": "Thanks. Your reply was sent for review.",
+      "cancelReply": "Cancel"
     }
   },
   "notFound": {

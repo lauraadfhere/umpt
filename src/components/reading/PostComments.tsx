@@ -10,7 +10,8 @@ import { richTextToPlain, parseRichText } from "@/lib/richtext";
 import { AuthorAvatar } from "@/components/ui/AuthorAvatar";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { CommentMessageBody } from "@/components/reading/CommentMessageBody";
-import { CompactRichTextEditor } from "@/components/reading/CompactRichTextEditor";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
+import { uploadPublicImage } from "@/lib/client-upload";
 
 type Comment = {
   id: string;
@@ -35,6 +36,67 @@ function voteKey(id: string) {
   return `umpt-voted-${id}`;
 }
 
+function InlineReplyForm({
+  parentId,
+  canReply,
+  onSubmit,
+  t,
+}: {
+  parentId: string;
+  canReply: boolean;
+  onSubmit: (parentId: string, message: string) => Promise<void>;
+  t: ReturnType<typeof useTranslations>;
+}) {
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  if (!canReply) return null;
+
+  if (!open) {
+    return (
+      <button type="button" onClick={() => setOpen(true)} className="text-[13px] font-semibold text-link hover:underline">
+        {t("reply")}
+      </button>
+    );
+  }
+
+  return (
+    <div className="mt-3 w-full border-t border-rule pt-3">
+      <RichTextEditor
+        id={`comment-reply-${parentId}`}
+        placeholder={t("replyPlaceholder")}
+        value={message}
+        onChange={setMessage}
+        size="compact"
+        uploadImage={uploadPublicImage}
+      />
+      <div className="mt-3 flex flex-wrap gap-3">
+        <button
+          type="button"
+          disabled={busy || !messageText(message)}
+          onClick={async () => {
+            setBusy(true);
+            try {
+              await onSubmit(parentId, message);
+              setMessage("");
+              setOpen(false);
+            } finally {
+              setBusy(false);
+            }
+          }}
+          className="min-h-11 touch-manipulation bg-link px-4 py-2 text-[14px] font-semibold text-white hover:bg-link-hover disabled:opacity-60"
+        >
+          {busy ? t("sending") : t("replySubmit")}
+        </button>
+        <button type="button" onClick={() => setOpen(false)} className="text-[13px] text-muted hover:underline">
+          {t("cancelReply")}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function CommentReplyBlock({
   comment,
   depth,
@@ -42,6 +104,8 @@ function CommentReplyBlock({
   votedIds,
   hydrated,
   onVote,
+  onSubmitReply,
+  canReply,
   t,
   locale,
   descendants,
@@ -52,6 +116,8 @@ function CommentReplyBlock({
   votedIds: Set<string>;
   hydrated: boolean;
   onVote: (id: string, direction: "like" | "dislike") => void;
+  onSubmitReply: (parentId: string, message: string) => Promise<void>;
+  canReply: boolean;
   t: ReturnType<typeof useTranslations>;
   locale: string;
   descendants: (id: string) => Comment[];
@@ -81,7 +147,7 @@ function CommentReplyBlock({
             plainClassName="mt-2 break-words text-[18px] text-text sm:text-[15px]"
           />
           {!isNested ? (
-            <div className="mt-3 flex flex-wrap items-center gap-2 text-[13px] sm:gap-3">
+            <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-[13px]">
               <button
                 type="button"
                 disabled={voted}
@@ -102,6 +168,7 @@ function CommentReplyBlock({
                 <span aria-hidden>▼</span>
                 <span>{comment.dislikes}</span>
               </button>
+              <InlineReplyForm parentId={comment.id} canReply={canReply} onSubmit={onSubmitReply} t={t} />
             </div>
           ) : null}
         </div>
@@ -115,6 +182,8 @@ function CommentReplyBlock({
           votedIds={votedIds}
           hydrated={hydrated}
           onVote={onVote}
+          onSubmitReply={onSubmitReply}
+          canReply={canReply}
           t={t}
           locale={locale}
           descendants={descendants}
@@ -146,6 +215,7 @@ export function PostComments({
   const [signingIn, setSigningIn] = useState(false);
   const [votedIds, setVotedIds] = useState<Set<string>>(new Set());
   const [hydrated, setHydrated] = useState(false);
+  const [notice, setNotice] = useState<{ kind: "success" | "error"; text: string } | null>(null);
 
   const { roots, descendants } = useMemo(() => indexCommentsByParent(comments), [comments]);
 
@@ -215,15 +285,15 @@ export function PostComments({
     }
   }
 
-  async function submitComment(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (!messageText(message) || submitting) return;
+  async function postComment(body: { message: string; parentId?: string }) {
+    if (!messageText(body.message)) return;
     if (!reader && !email.trim()) {
-      setStatus(t("emailRequired"));
+      setNotice({ kind: "error", text: t("emailRequired") });
       return;
     }
     setSubmitting(true);
     setStatus(t("sending"));
+    setNotice(null);
     try {
       const response = await fetch("/api/comments", {
         method: "POST",
@@ -233,7 +303,8 @@ export function PostComments({
           postId,
           email: email.trim(),
           name: name.trim() || undefined,
-          message: message.trim(),
+          message: body.message.trim(),
+          ...(body.parentId ? { parentId: body.parentId } : {}),
         }),
       });
       const data = (await response.json()) as { error?: string; session?: ReaderSession };
@@ -243,15 +314,27 @@ export function PostComments({
         const sessionData = (await sessionResponse.json()) as { session?: ReaderSession | null };
         if (sessionData.session) setReader(sessionData.session);
       }
-      setMessage("");
-      setStatus(t("saved"));
+      if (!body.parentId) setMessage("");
+      const successText = body.parentId ? t("replySaved") : t("saved");
+      setStatus("");
+      setNotice({ kind: "success", text: successText });
       await loadComments();
     } catch (error) {
-      setStatus(error instanceof Error ? error.message : t("saveError"));
+      const text = error instanceof Error ? error.message : t("saveError");
+      setStatus("");
+      setNotice({ kind: "error", text });
     } finally {
       setSubmitting(false);
     }
   }
+
+  async function submitComment(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (submitting) return;
+    await postComment({ message });
+  }
+
+  const canReply = Boolean(reader) || email.trim().length > 0;
 
   async function vote(id: string, direction: "like" | "dislike") {
     if (typeof window !== "undefined" && localStorage.getItem(voteKey(id))) return;
@@ -362,12 +445,14 @@ export function PostComments({
           </>
         )}
         <div className="mt-4">
-          <CompactRichTextEditor
+          <RichTextEditor
             id="comment-message"
             label={t("yourComment")}
             placeholder={t("commentPlaceholder")}
             value={message}
             onChange={setMessage}
+            size="compact"
+            uploadImage={uploadPublicImage}
           />
         </div>
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
@@ -382,11 +467,22 @@ export function PostComments({
         </div>
       </form>
 
-      {status && (
+      {status ? (
         <p role="status" className="mt-4 text-[14px] text-muted">
           {status}
         </p>
-      )}
+      ) : null}
+      {notice ? (
+        <p
+          role="status"
+          aria-live="polite"
+          className={`mt-4 border-s-4 px-4 py-3 text-[14px] ${
+            notice.kind === "success" ? "border-edition bg-panel text-text" : "border-new bg-white text-new"
+          }`}
+        >
+          {notice.text}
+        </p>
+      ) : null}
       {loading && (
         <p role="status" className="mt-6 text-[14px] text-muted">
           {t("loading")}
@@ -405,6 +501,8 @@ export function PostComments({
                 votedIds={votedIds}
                 hydrated={hydrated}
                 onVote={vote}
+                onSubmitReply={(parentId, replyMessage) => postComment({ message: replyMessage, parentId })}
+                canReply={canReply}
                 t={t}
                 locale={locale}
                 descendants={descendants}

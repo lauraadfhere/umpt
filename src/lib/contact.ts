@@ -50,7 +50,7 @@ export function readContactInput(body: unknown): { input: ContactInput } | { err
   if (!name || name.length > 80) return { error: "Enter a name of up to 80 characters." };
   if (!email || email.length > 120 || !EMAIL.test(email)) return { error: "Enter a valid email address." };
   if (!subject || subject.length > 160) return { error: "Enter a subject of up to 160 characters." };
-  if (!messageRaw || messageRaw.length > 4_000) return { error: "Enter a message of up to 4,000 characters." };
+  if (!messageRaw || messageRaw.length > 12_000) return { error: "Enter a message of up to 12,000 characters." };
 
   const { html: messageHtml, text } = /<[a-z]/i.test(messageRaw)
     ? sanitizeRichText(messageRaw)

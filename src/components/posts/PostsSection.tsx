@@ -28,7 +28,7 @@ export function PostsSection({ posts, accent }: { posts: PostSummary[] | null; a
           <p className="text-[19px] text-muted md:text-[15px]">{t("empty")}</p>
         ) : (
           <>
-            <div className="max-w-[720px]">
+            <div className="max-w-full md:max-w-[720px]">
               <PostsTabs latest={latest} mostViewed={mostViewed} />
             </div>
             <div className="mt-8 border-t border-rule pt-4 text-end">

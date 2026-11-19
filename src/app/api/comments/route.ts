@@ -2,7 +2,7 @@ import { createComment, getComments, prepareCommentMessage } from "@/lib/comment
 import { getReaderSession, normaliseReaderEmail, startReaderSession } from "@/lib/reader-auth";
 
 const MAX_NAME_LENGTH = 80;
-const MAX_COMMENT_LENGTH = 2_000;
+const MAX_COMMENT_LENGTH = 12_000;
 const MAX_SLUG_LENGTH = 200;
 const OBJECT_ID = /^[A-Za-z0-9]{1,64}$/;
 
@@ -21,7 +21,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  let input: { slug?: unknown; postId?: unknown; name?: unknown; email?: unknown; message?: unknown };
+  let input: { slug?: unknown; postId?: unknown; name?: unknown; email?: unknown; message?: unknown; parentId?: unknown };
   try {
     input = await request.json();
   } catch {
@@ -30,7 +30,9 @@ export async function POST(request: Request) {
 
   const slug = typeof input.slug === "string" ? input.slug.trim() : "";
   const postId = typeof input.postId === "string" ? input.postId.trim() : undefined;
+  const parentId = typeof input.parentId === "string" ? input.parentId.trim() : undefined;
   if (postId && !OBJECT_ID.test(postId)) return Response.json({ error: "Invalid post id." }, { status: 400 });
+  if (parentId && !OBJECT_ID.test(parentId)) return Response.json({ error: "Invalid parent comment." }, { status: 400 });
   const rawMessage = typeof input.message === "string" ? input.message.trim() : "";
   const { html: message, text } = prepareCommentMessage(rawMessage);
   const session = await getReaderSession();
@@ -47,7 +49,7 @@ export async function POST(request: Request) {
 
   try {
     if (!session) await startReaderSession(email);
-    const comment = await createComment({ slug, postId, name, email, message });
+    const comment = await createComment({ slug, postId, name, email, message, parentId });
     return Response.json({ comment }, { status: 201 });
   } catch (error) {
     const err = error instanceof Error ? error.message : "Unable to save comment.";

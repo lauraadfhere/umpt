@@ -94,11 +94,11 @@ export function HomePostsAccentForm({ initial }: { initial: HomePostsAccentSetti
             <img
               src={settings.imageUrl}
               alt=""
-              className="pointer-events-none absolute -end-6 top-1/2 h-[min(440px,90%)] w-[min(400px,48vw)] -translate-y-1/2 object-contain rtl:-scale-x-100"
+              className="pointer-events-none absolute end-12 top-1/2 h-[min(400px,88%)] w-[min(360px,40vw)] -translate-y-1/2 object-contain sm:end-14 lg:end-20 rtl:-scale-x-100"
               style={{ opacity: settings.opacity / 100 }}
             />
           ) : (
-            <HandDrawnAccent className="absolute -end-6 top-1/2 h-[min(440px,90%)] w-[min(400px,48vw)] -translate-y-1/2 rtl:-scale-x-100" />
+            <HandDrawnAccent className="absolute end-12 top-1/2 h-[min(400px,88%)] w-[min(360px,40vw)] -translate-y-1/2 sm:end-14 lg:end-20 rtl:-scale-x-100" />
           )}
           <div className="relative max-w-[360px] px-5 py-8">
             <p className="text-[18px] font-semibold text-text">{t("previewPostsTitle")}</p>
