@@ -27,15 +27,34 @@ export function FaviconForm({ initial }: { initial: FaviconSettings }) {
     setSaved(false);
   }
 
+  async function persist(next: FaviconSettings) {
+    const response = await fetch("/api/admin/favicon", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(next),
+    });
+    const data = (await response.json().catch(() => ({}))) as FaviconSettings & { error?: string };
+    if (!response.ok) throw new Error(data.error || t("saveError"));
+    setSettings(data);
+    setSaved(true);
+    router.refresh();
+    return data;
+  }
+
   async function upload(kind: "favicon" | "apple", file: File) {
     setError("");
+    setSaved(false);
     setUploading(kind);
     try {
       const url = await uploadAdminImage(file);
-      if (kind === "favicon") update("faviconUrl", url);
-      else update("appleTouchIconUrl", url);
-    } catch {
-      setError(tDash("networkError"));
+      const next =
+        kind === "favicon"
+          ? { ...settings, faviconUrl: url }
+          : { ...settings, appleTouchIconUrl: url };
+      setSettings(next);
+      await persist(next);
+    } catch (err) {
+      setError(err instanceof Error && err.message !== tDash("networkError") ? err.message : tDash("networkError"));
     } finally {
       setUploading(null);
     }
@@ -47,25 +66,20 @@ export function FaviconForm({ initial }: { initial: FaviconSettings }) {
     setError("");
     setSaved(false);
     try {
-      const response = await fetch("/api/admin/favicon", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(settings),
-      });
-      const data = (await response.json().catch(() => ({}))) as FaviconSettings & { error?: string };
-      if (!response.ok) {
-        setError(data.error || t("saveError"));
-        return;
-      }
-      setSettings(data);
-      setSaved(true);
-      router.refresh();
-    } catch {
-      setError(tDash("networkError"));
+      await persist(settings);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : tDash("networkError"));
     } finally {
       setBusy(false);
     }
   }
+
+  const previewSrc = settings.faviconUrl
+    ? `/site-icon?v=${encodeURIComponent(settings.faviconUrl.slice(-48))}`
+    : "";
+  const applePreviewSrc = settings.appleTouchIconUrl
+    ? `/site-icon?apple=1&v=${encodeURIComponent(settings.appleTouchIconUrl.slice(-48))}`
+    : previewSrc;
 
   return (
     <form onSubmit={submit} className="space-y-8">
@@ -86,8 +100,8 @@ export function FaviconForm({ initial }: { initial: FaviconSettings }) {
         <p className="mb-4 text-[13px] text-muted">{t("faviconHint")}</p>
         <div className="flex flex-wrap items-start gap-6">
           <div className="flex size-16 items-center justify-center border border-rule bg-panel">
-            {settings.faviconUrl ? (
-              <img src={settings.faviconUrl} alt="" className="max-h-12 max-w-12 object-contain" />
+            {previewSrc ? (
+              <img src={previewSrc} alt="" className="max-h-12 max-w-12 object-contain" />
             ) : (
               <span className="text-[11px] text-muted">{t("noIcon")}</span>
             )}
@@ -132,12 +146,8 @@ export function FaviconForm({ initial }: { initial: FaviconSettings }) {
         <p className="mb-4 text-[13px] text-muted">{t("appleHint")}</p>
         <div className="flex flex-wrap items-start gap-6">
           <div className="flex size-20 items-center justify-center border border-rule bg-panel">
-            {(settings.appleTouchIconUrl || settings.faviconUrl) ? (
-              <img
-                src={settings.appleTouchIconUrl || settings.faviconUrl}
-                alt=""
-                className="max-h-16 max-w-16 object-contain"
-              />
+            {applePreviewSrc ? (
+              <img src={applePreviewSrc} alt="" className="max-h-16 max-w-16 object-contain" />
             ) : (
               <span className="text-[11px] text-muted">{t("noIcon")}</span>
             )}

@@ -5,7 +5,6 @@ import { getProceedings, latestFirst } from "@/lib/catalog";
 import { getHomePostsAccentSettings } from "@/lib/home-posts-accent";
 import { getPosts, type PostSummary } from "@/lib/posts";
 import { pageMetadata, websiteJsonLd } from "@/lib/seo";
-import { CategoryCards } from "@/components/home/CategoryCards";
 import { PageShell } from "@/components/layout/PageShell";
 import { PostsSection } from "@/components/posts/PostsSection";
 import { ProceedingsHighlights } from "@/components/proceedings/ProceedingsHighlights";
@@ -68,7 +67,6 @@ export default async function HomePage({ params }: Props) {
           </div>
         </Panel>
       </div>
-      <CategoryCards />
       <PostsSection posts={posts} accent={homePostsAccent} />
       <ProceedingsHighlights latest={latest.slice(0, 5)} alphabetical={alphabetical.slice(0, 5)} />
       <RecentlyLoaded items={latest.slice(0, 6)} />

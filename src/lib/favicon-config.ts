@@ -14,7 +14,6 @@ export const DEFAULT_FAVICON_SETTINGS: FaviconSettings = {
 /** Instant same-origin icon endpoints (served by app routes, not Parse). */
 export const SITE_FAVICON_PATH = "/site-icon";
 export const SITE_APPLE_ICON_PATH = "/site-icon?apple=1";
-export const STATIC_FAVICON_SVG = "/favicon.svg";
 
 function isSafeIconUrl(url: string) {
   if (!url) return true;

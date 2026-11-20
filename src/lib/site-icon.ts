@@ -1,12 +1,12 @@
 // Server-only: resolves and proxies favicon bytes for /site-icon.
-import { getFaviconSettings } from "@/lib/favicon";
+import { getFaviconSettingsUncached } from "@/lib/favicon";
 import { resolveIconSource } from "@/lib/favicon-config";
 
 const FALLBACK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="UMPT"><rect width="32" height="32" fill="#1a5276"/><circle cx="22" cy="10" r="5.5" fill="#ffffff"/><text x="8" y="21" fill="#ffffff" font-family="system-ui,sans-serif" font-size="9" font-weight="700">DL</text></svg>`;
 
-function cacheHeaders(maxAge = 3_600) {
+function cacheHeaders(maxAge = 300) {
   return {
-    "Cache-Control": `public, max-age=${maxAge}, stale-while-revalidate=86400`,
+    "Cache-Control": `public, max-age=${maxAge}, stale-while-revalidate=3600`,
   };
 }
 
@@ -51,21 +51,22 @@ async function proxyRemote(url: string): Promise<Response> {
   // Plain fetch works on Cloudflare Workers; avoid Next data-cache options that can mask failures.
   const upstream = await fetch(url, {
     headers: { Accept: "image/*,*/*;q=0.8" },
-    cache: "force-cache",
+    cache: "no-store",
   });
   if (!upstream.ok) throw new Error(`Icon upstream returned ${upstream.status}.`);
   const bytes = await upstream.arrayBuffer();
   if (!bytes.byteLength) throw new Error("Icon upstream returned an empty file.");
   return new Response(bytes, {
     headers: {
-      ...cacheHeaders(3_600),
+      ...cacheHeaders(),
       "Content-Type": guessContentType(url, upstream.headers.get("content-type")),
     },
   });
 }
 
 export async function buildSiteIconResponse(apple: boolean, origin: string): Promise<Response> {
-  const settings = await getFaviconSettings();
+  // Uncached so a dashboard save shows up on the next /site-icon request (CF cache tags are unreliable).
+  const settings = await getFaviconSettingsUncached();
   const source = resolveIconSource(settings, apple);
 
   if (!source) return readFallbackSvg();
