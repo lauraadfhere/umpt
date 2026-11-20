@@ -10,6 +10,9 @@ const EXTENSIONS: Record<string, string> = {
   "image/png": "png",
   "image/webp": "webp",
   "image/gif": "gif",
+  "image/svg+xml": "svg",
+  "image/x-icon": "ico",
+  "image/vnd.microsoft.icon": "ico",
 };
 
 function parseContentLength(value: string | null) {
@@ -24,7 +27,7 @@ export async function POST(request: Request) {
 
   const type = (request.headers.get("content-type") ?? "").split(";")[0].trim().toLowerCase();
   const extension = EXTENSIONS[type];
-  if (!extension) return Response.json({ error: "Upload a JPG, PNG, WebP or GIF image." }, { status: 400 });
+  if (!extension) return Response.json({ error: "Upload a JPG, PNG, WebP, GIF, SVG or ICO image." }, { status: 400 });
 
   const length = parseContentLength(request.headers.get("content-length"));
   if (length === 0) return Response.json({ error: "The file is empty." }, { status: 400 });

@@ -50,11 +50,23 @@ export async function prepareImageForUpload(file: File): Promise<{ body: Blob; c
   return { body: blob, contentType: outputType };
 }
 
+function contentTypeForUpload(file: File, preparedType: string) {
+  if (preparedType && preparedType !== "application/octet-stream") return preparedType;
+  const name = file.name.toLowerCase();
+  if (name.endsWith(".svg")) return "image/svg+xml";
+  if (name.endsWith(".ico")) return "image/x-icon";
+  if (name.endsWith(".png")) return "image/png";
+  if (name.endsWith(".webp")) return "image/webp";
+  if (name.endsWith(".gif")) return "image/gif";
+  if (name.endsWith(".jpg") || name.endsWith(".jpeg")) return "image/jpeg";
+  return preparedType || "application/octet-stream";
+}
+
 export async function uploadAdminImage(file: File): Promise<string> {
   const { body, contentType } = await prepareImageForUpload(file);
   const response = await fetch("/api/admin/uploads", {
     method: "POST",
-    headers: { "Content-Type": contentType },
+    headers: { "Content-Type": contentTypeForUpload(file, contentType) },
     body,
   });
   const data = (await response.json().catch(() => ({}))) as { url?: string; error?: string };

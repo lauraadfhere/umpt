@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
 import { getPosts, type PostSummary } from "@/lib/posts";
 import { breadcrumbJsonLd, localeUrl, pageMetadata } from "@/lib/seo";
 import { PageShell } from "@/components/layout/PageShell";
@@ -19,8 +18,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 function matchesCategory(post: PostSummary, category: string) {
   const needle = category.trim().toLowerCase();
   if (!needle) return true;
-  const hay = `${post.category} ${post.tags.join(" ")} ${post.title}`.toLowerCase();
-  return hay.includes(needle);
+  if (post.category?.toLowerCase().includes(needle)) return true;
+  return post.tags.some((tag) => tag.toLowerCase().includes(needle));
 }
 
 export default async function PostsPage({ params, searchParams }: Props) {
@@ -50,14 +49,7 @@ export default async function PostsPage({ params, searchParams }: Props) {
       />
       <div className="relative mx-auto max-w-[1200px] px-4 sm:px-6">
         <SectionTitle className="mb-5">{t("listTitle")}</SectionTitle>
-        {categoryFilter ? (
-          <p className="mb-3 text-[14px] text-muted">
-            {t("filteredBy", { category: categoryFilter })}{" "}
-            <Link href="/posts" className="font-semibold text-link hover:underline">
-              {t("clearFilter")}
-            </Link>
-          </p>
-        ) : null}
+        {categoryFilter ? <p className="mb-3 text-[14px] text-muted">{t("filteredBy", { category: categoryFilter })}</p> : null}
         {posts === null ? (
           <p role="status" className="border-s-4 border-new bg-panel px-4 py-3 text-[14px] text-text">
             {t("loadError")}

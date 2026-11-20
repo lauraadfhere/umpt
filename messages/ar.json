@@ -46,7 +46,7 @@
     "blogs": "المدونات",
     "proceedings": "المشاريع والبحث",
     "books": "الكتب",
-    "sigs": "مجموعات الاهتمام",
+    "sigs": "الفئات",
     "conferences": "المؤتمرات",
     "institutions": "المؤسسات",
     "people": "الأشخاص",
@@ -125,17 +125,24 @@
     "browseProceedings": "تصفح الوقائع",
     "browsePosts": "قراءة المقالات",
     "categories": {
-      "title": "تصفّح حسب الفئة",
+      "title": "فئات UMPT",
+      "viewAll": "كل الفئات",
       "pages": "صفحات الفئات",
-      "page": "صفحة {n}",
-      "technology": { "name": "التكنولوجيا", "subtitle": "البرمجيات والأنظمة والابتكار الرقمي" },
-      "entertainment": { "name": "الترفيه", "subtitle": "الإعلام والثقافة والصناعات الإبداعية" },
-      "science": { "name": "العلوم", "subtitle": "البحث والاكتشاف والعلوم التطبيقية" },
-      "business": { "name": "الأعمال", "subtitle": "الأسواق والقيادة والمؤسسات" },
-      "health": { "name": "الصحة", "subtitle": "العافية والرعاية وعلوم الحياة" },
-      "education": { "name": "التعليم", "subtitle": "التعلّم والتدريس والمهارات" },
-      "arts": { "name": "الفنون", "subtitle": "التصميم والأدب والفنون البصرية" }
+      "page": "الصفحة {n}",
+      "technology": { "name": "التكنولوجيا", "subtitle": "الحوسبة والأنظمة الرقمية" },
+      "entertainment": { "name": "الترفيه", "subtitle": "الإعلام والثقافة والترفيه" },
+      "science": { "name": "العلوم", "subtitle": "البحث والاكتشاف" },
+      "business": { "name": "الأعمال", "subtitle": "الأسواق والمنظمات" },
+      "health": { "name": "الصحة", "subtitle": "العافية والطب" },
+      "education": { "name": "التعليم", "subtitle": "التعلم والتدريس" },
+      "arts": { "name": "الفنون", "subtitle": "الممارسة الإبداعية" }
     }
+  },
+  "categoriesPage": {
+    "heroTitle": "الفئات",
+    "metaDescription": "تصفّح محتوى UMPT حسب الفئة.",
+    "intro": "استكشف كل فئة في الكتالوج. كل بطاقة تفتح مقالات ذلك الموضوع.",
+    "listTitle": "كل الفئات"
   },
   "proceedings": {
     "heroTitle": "المشاريع والبحث",
@@ -973,12 +980,11 @@
     "readMore": "اقرأ المزيد",
     "count": "{count, plural, one {مقال واحد} two {مقالان} few {# مقالات} many {# مقالًا} other {# مقال}}",
     "empty": "لم يُنشر أي مقال بعد.",
+    "filteredBy": "عرض مقالات الفئة «{category}».",
     "loadError": "تعذّر تحميل المقالات من خادم المحتوى. يُرجى المحاولة مرة أخرى بعد قليل.",
     "metaDescription": "أحدث المقالات المنشورة في UMPT WORLD OF TOMORROW، من الأحدث إلى الأقدم.",
     "tabLatest": "الأحدث",
-    "tabMostViewed": "الأكثر مشاهدة",
-    "filteredBy": "عرض المقالات المتعلقة بـ «{category}».",
-    "clearFilter": "إزالة التصفية"
+    "tabMostViewed": "الأكثر مشاهدة"
   },
   "reading": {
     "sections": "الأقسام",

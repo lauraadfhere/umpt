@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import { getFaviconSettings } from "@/lib/favicon";
 import { faviconMetadataIcons } from "@/lib/favicon-config";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import "../globals.css";
@@ -36,14 +37,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   // Unknown locales end in the 404 page; they only need the plain defaults.
   if (!hasLocale(routing.locales, locale)) return { metadataBase: new URL(SITE_URL) };
-  const t = await getTranslations({ locale, namespace: "meta" });
+  const [t, favicon] = await Promise.all([
+    getTranslations({ locale, namespace: "meta" }),
+    getFaviconSettings().catch(() => ({ faviconUrl: "", appleTouchIconUrl: "" })),
+  ]);
+  // Bust browser/CDN cache when the CMS favicon URL changes.
+  const iconCacheKey = favicon.faviconUrl || favicon.appleTouchIconUrl || "default";
   // Pages add their own canonical link, hreflang alternates and share tags through pageMetadata().
   return {
     metadataBase: new URL(SITE_URL),
     title: { default: t("title"), template: `%s · ${t("title")}` },
     description: t("description"),
     applicationName: SITE_NAME,
-    icons: faviconMetadataIcons(),
+    icons: faviconMetadataIcons(iconCacheKey.slice(-48)),
     openGraph: { type: "website", siteName: SITE_NAME, title: t("title"), description: t("description") },
     twitter: { card: "summary", title: t("title"), description: t("description") },
     formatDetection: { telephone: false, email: false, address: false },

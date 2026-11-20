@@ -46,7 +46,7 @@
     "blogs": "Blogs",
     "proceedings": "Projets et recherche",
     "books": "Livres",
-    "sigs": "SIG",
+    "sigs": "Catégories",
     "conferences": "Conférences",
     "institutions": "Institutions",
     "people": "Personnes",
@@ -125,17 +125,24 @@
     "browseProceedings": "Parcourir les actes",
     "browsePosts": "Lire les articles",
     "categories": {
-      "title": "Parcourir par catégorie",
+      "title": "Catégories UMPT",
+      "viewAll": "Toutes les catégories",
       "pages": "Pages de catégories",
       "page": "Page {n}",
-      "technology": { "name": "Technologie", "subtitle": "Logiciels, systèmes et innovation numérique" },
-      "entertainment": { "name": "Divertissement", "subtitle": "Médias, culture et industries créatives" },
-      "science": { "name": "Science", "subtitle": "Recherche, découverte et sciences appliquées" },
-      "business": { "name": "Business", "subtitle": "Marchés, leadership et entreprise" },
-      "health": { "name": "Santé", "subtitle": "Bien-être, soins et sciences de la vie" },
-      "education": { "name": "Éducation", "subtitle": "Apprentissage, enseignement et compétences" },
-      "arts": { "name": "Arts", "subtitle": "Design, littérature et arts visuels" }
+      "technology": { "name": "Technologie", "subtitle": "Informatique et systèmes numériques" },
+      "entertainment": { "name": "Divertissement", "subtitle": "Médias, culture et loisirs" },
+      "science": { "name": "Science", "subtitle": "Recherche et découverte" },
+      "business": { "name": "Entreprise", "subtitle": "Marchés et organisations" },
+      "health": { "name": "Santé", "subtitle": "Bien-être et médecine" },
+      "education": { "name": "Éducation", "subtitle": "Apprentissage et enseignement" },
+      "arts": { "name": "Arts", "subtitle": "Pratique créative" }
     }
+  },
+  "categoriesPage": {
+    "heroTitle": "Catégories",
+    "metaDescription": "Parcourir le contenu UMPT par catégorie.",
+    "intro": "Explorez chaque catégorie du catalogue. Chaque carte ouvre les articles de ce sujet.",
+    "listTitle": "Toutes les catégories"
   },
   "proceedings": {
     "heroTitle": "Projets et recherche",
@@ -973,12 +980,11 @@
     "readMore": "Lire la suite",
     "count": "{count, plural, one {# article} other {# articles}}",
     "empty": "Aucun article n'a encore été publié.",
+    "filteredBy": "Articles de la catégorie « {category} ».",
     "loadError": "Les articles n'ont pas pu être chargés depuis le serveur de contenu. Veuillez réessayer dans un instant.",
     "metaDescription": "Les derniers articles publiés dans la UMPT WORLD OF TOMORROW, du plus récent au plus ancien.",
     "tabLatest": "Récents",
-    "tabMostViewed": "Les plus vus",
-    "filteredBy": "Articles liés à « {category} ».",
-    "clearFilter": "Effacer le filtre"
+    "tabMostViewed": "Les plus vus"
   },
   "reading": {
     "sections": "Sections",

@@ -6,7 +6,7 @@ export const NAV: { key: NavKey; href: string }[] = [
   { key: "blogs", href: "/blogs" },
   { key: "proceedings", href: "/proceedings" },
   { key: "books", href: "/books" },
-  { key: "sigs", href: "/proceedings" },
+  { key: "sigs", href: "/categories" },
   { key: "conferences", href: "/proceedings" },
   { key: "institutions", href: "/people" },
   { key: "people", href: "/people" },

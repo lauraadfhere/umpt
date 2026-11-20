@@ -38,15 +38,18 @@ export function normaliseFaviconSettings(input: Partial<Record<keyof FaviconSett
   return { faviconUrl, appleTouchIconUrl };
 }
 
-/** Next.js metadata.icons — always same-origin so the tab icon is not gated on Parse. */
-export function faviconMetadataIcons() {
+/**
+ * Next.js metadata.icons — always same-origin via /site-icon (proxies CMS upload or falls back).
+ * Do not also list /favicon.svg here: browsers often prefer that static SVG and ignore the custom icon.
+ */
+export function faviconMetadataIcons(cacheKey = "1") {
+  const v = encodeURIComponent(cacheKey);
+  const iconUrl = `${SITE_FAVICON_PATH}?v=${v}`;
+  const appleUrl = `${SITE_FAVICON_PATH}?apple=1&v=${v}`;
   return {
-    icon: [
-      { url: SITE_FAVICON_PATH },
-      { url: STATIC_FAVICON_SVG, type: "image/svg+xml" },
-    ],
-    apple: [{ url: SITE_APPLE_ICON_PATH }],
-    shortcut: [{ url: SITE_FAVICON_PATH }],
+    icon: [{ url: iconUrl }],
+    apple: [{ url: appleUrl }],
+    shortcut: [{ url: iconUrl }],
   };
 }
 

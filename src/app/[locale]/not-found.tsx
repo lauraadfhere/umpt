@@ -23,6 +23,7 @@ const LINKS = [
   { key: "posts", href: "/posts" },
   { key: "contact", href: "/contact" },
   { key: "questions", href: "/questions" },
+  { key: "categories", href: "/categories" },
   { key: "about", href: "/about" },
   { key: "proceedings", href: "/proceedings" },
   { key: "books", href: "/books" },

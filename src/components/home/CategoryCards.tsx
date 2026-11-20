@@ -80,23 +80,30 @@ export function CategoryCards() {
           ))}
         </div>
 
-        {pages > 1 ? (
-          <div className="mt-4 flex justify-center gap-2" role="tablist" aria-label={t("pages")}>
-            {Array.from({ length: pages }, (_, index) => (
-              <button
-                key={index}
-                type="button"
-                role="tab"
-                aria-selected={page === index}
-                aria-label={t("page", { n: index + 1 })}
-                onClick={() => goTo(index)}
-                className={`size-2.5 rounded-full border-2 transition ${
-                  page === index ? "border-link bg-link" : "border-[#9aa0a6] bg-transparent hover:border-link"
-                }`}
-              />
-            ))}
-          </div>
-        ) : null}
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+          {pages > 1 ? (
+            <div className="flex justify-center gap-2" role="tablist" aria-label={t("pages")}>
+              {Array.from({ length: pages }, (_, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  role="tab"
+                  aria-selected={page === index}
+                  aria-label={t("page", { n: index + 1 })}
+                  onClick={() => goTo(index)}
+                  className={`size-2.5 rounded-full border-2 transition ${
+                    page === index ? "border-link bg-link" : "border-[#9aa0a6] bg-transparent hover:border-link"
+                  }`}
+                />
+              ))}
+            </div>
+          ) : (
+            <span />
+          )}
+          <Link href="/categories" className="text-[14px] font-semibold text-link hover:underline md:text-[13px]">
+            {t("viewAll")}
+          </Link>
+        </div>
       </div>
     </section>
   );
