@@ -123,7 +123,19 @@
     "welcomeTitle": "Bienvenido",
     "welcomeBody": "La UMPT WORLD OF TOMORROW reúne actas de congresos, libros y perfiles de autores. Busque por título, explore el índice alfabético o encuentre a las personas detrás de la investigación.",
     "browseProceedings": "Explorar actas",
-    "browsePosts": "Leer los artículos"
+    "browsePosts": "Leer los artículos",
+    "categories": {
+      "title": "Explorar por categoría",
+      "pages": "Páginas de categorías",
+      "page": "Página {n}",
+      "technology": { "name": "Tecnología", "subtitle": "Software, sistemas e innovación digital" },
+      "entertainment": { "name": "Entretenimiento", "subtitle": "Medios, cultura e industrias creativas" },
+      "science": { "name": "Ciencia", "subtitle": "Investigación, descubrimiento y ciencia aplicada" },
+      "business": { "name": "Negocios", "subtitle": "Mercados, liderazgo y empresa" },
+      "health": { "name": "Salud", "subtitle": "Bienestar, cuidado y ciencias de la vida" },
+      "education": { "name": "Educación", "subtitle": "Aprendizaje, enseñanza y habilidades" },
+      "arts": { "name": "Artes", "subtitle": "Diseño, literatura y artes visuales" }
+    }
   },
   "proceedings": {
     "heroTitle": "Proyectos e investigación",
@@ -964,7 +976,9 @@
     "loadError": "No se pudieron cargar los artículos desde el servidor de contenido. Inténtelo de nuevo en un momento.",
     "metaDescription": "Los últimos artículos publicados en la UMPT WORLD OF TOMORROW, del más reciente al más antiguo.",
     "tabLatest": "Recientes",
-    "tabMostViewed": "Más vistos"
+    "tabMostViewed": "Más vistos",
+    "filteredBy": "Mostrando artículos relacionados con “{category}”.",
+    "clearFilter": "Quitar filtro"
   },
   "reading": {
     "sections": "Secciones",

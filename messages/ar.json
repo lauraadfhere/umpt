@@ -123,7 +123,19 @@
     "welcomeTitle": "مرحبًا",
     "welcomeBody": "تجمع UMPT WORLD OF TOMORROW وقائع المؤتمرات والكتب وملفات المؤلفين في مكان واحد. ابحث بالعنوان أو تصفح الفهرس الأبجدي أو تعرّف على الباحثين.",
     "browseProceedings": "تصفح الوقائع",
-    "browsePosts": "قراءة المقالات"
+    "browsePosts": "قراءة المقالات",
+    "categories": {
+      "title": "تصفّح حسب الفئة",
+      "pages": "صفحات الفئات",
+      "page": "صفحة {n}",
+      "technology": { "name": "التكنولوجيا", "subtitle": "البرمجيات والأنظمة والابتكار الرقمي" },
+      "entertainment": { "name": "الترفيه", "subtitle": "الإعلام والثقافة والصناعات الإبداعية" },
+      "science": { "name": "العلوم", "subtitle": "البحث والاكتشاف والعلوم التطبيقية" },
+      "business": { "name": "الأعمال", "subtitle": "الأسواق والقيادة والمؤسسات" },
+      "health": { "name": "الصحة", "subtitle": "العافية والرعاية وعلوم الحياة" },
+      "education": { "name": "التعليم", "subtitle": "التعلّم والتدريس والمهارات" },
+      "arts": { "name": "الفنون", "subtitle": "التصميم والأدب والفنون البصرية" }
+    }
   },
   "proceedings": {
     "heroTitle": "المشاريع والبحث",
@@ -964,7 +976,9 @@
     "loadError": "تعذّر تحميل المقالات من خادم المحتوى. يُرجى المحاولة مرة أخرى بعد قليل.",
     "metaDescription": "أحدث المقالات المنشورة في UMPT WORLD OF TOMORROW، من الأحدث إلى الأقدم.",
     "tabLatest": "الأحدث",
-    "tabMostViewed": "الأكثر مشاهدة"
+    "tabMostViewed": "الأكثر مشاهدة",
+    "filteredBy": "عرض المقالات المتعلقة بـ «{category}».",
+    "clearFilter": "إزالة التصفية"
   },
   "reading": {
     "sections": "الأقسام",

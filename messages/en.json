@@ -123,7 +123,19 @@
     "welcomeTitle": "Welcome",
     "welcomeBody": "The UMPT WORLD OF TOMORROW collects conference proceedings, books and author profiles in one place. Browse by title, explore the alphabetical index, or find the people behind the research.",
     "browseProceedings": "Browse Projects & Research",
-    "browsePosts": "Read the Posts"
+    "browsePosts": "Read the Posts",
+    "categories": {
+      "title": "Browse by category",
+      "pages": "Category pages",
+      "page": "Page {n}",
+      "technology": { "name": "Technology", "subtitle": "Software, systems and digital innovation" },
+      "entertainment": { "name": "Entertainment", "subtitle": "Media, culture and creative industries" },
+      "science": { "name": "Science", "subtitle": "Research, discovery and applied science" },
+      "business": { "name": "Business", "subtitle": "Markets, leadership and enterprise" },
+      "health": { "name": "Health", "subtitle": "Wellbeing, care and life sciences" },
+      "education": { "name": "Education", "subtitle": "Learning, teaching and skills" },
+      "arts": { "name": "Arts", "subtitle": "Design, literature and the visual arts" }
+    }
   },
   "proceedings": {
     "heroTitle": "Projects & Research",
@@ -993,7 +1005,9 @@
     "loadError": "Posts could not be loaded from the content server. Please try again in a moment.",
     "metaDescription": "The latest posts published in the UMPT WORLD OF TOMORROW, newest first.",
     "tabLatest": "Latest",
-    "tabMostViewed": "Most Viewed"
+    "tabMostViewed": "Most Viewed",
+    "filteredBy": "Showing posts related to “{category}”.",
+    "clearFilter": "Clear filter"
   },
   "reading": {
     "sections": "Sections",

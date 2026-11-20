@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { getPosts, type PostSummary } from "@/lib/posts";
 import { breadcrumbJsonLd, localeUrl, pageMetadata } from "@/lib/seo";
 import { PageShell } from "@/components/layout/PageShell";
@@ -7,7 +8,7 @@ import { PostList } from "@/components/posts/PostList";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 
-type Props = { params: Promise<{ locale: string }> };
+type Props = { params: Promise<{ locale: string }>; searchParams: Promise<{ category?: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -15,16 +16,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return pageMetadata({ locale, path: "/posts", title: t("heroTitle"), description: t("metaDescription") });
 }
 
-export default async function PostsPage({ params }: Props) {
+function matchesCategory(post: PostSummary, category: string) {
+  const needle = category.trim().toLowerCase();
+  if (!needle) return true;
+  const hay = `${post.category} ${post.tags.join(" ")} ${post.title}`.toLowerCase();
+  return hay.includes(needle);
+}
+
+export default async function PostsPage({ params, searchParams }: Props) {
   const { locale } = await params;
+  const { category } = await searchParams;
   setRequestLocale(locale);
   const t = await getTranslations("posts");
   const tCommon = await getTranslations("breadcrumb");
+  const categoryFilter = category?.trim() || "";
 
   // A backend that cannot be reached is reported on the page instead of being hidden behind stand-in content.
   let posts: PostSummary[] | null = null;
   try {
-    posts = await getPosts(locale);
+    const all = await getPosts(locale);
+    posts = categoryFilter ? all.filter((post) => matchesCategory(post, categoryFilter)) : all;
   } catch (error) {
     console.error("[posts] The post list could not be loaded:", error instanceof Error ? error.message : error);
   }
@@ -39,6 +50,14 @@ export default async function PostsPage({ params }: Props) {
       />
       <div className="relative mx-auto max-w-[1200px] px-4 sm:px-6">
         <SectionTitle className="mb-5">{t("listTitle")}</SectionTitle>
+        {categoryFilter ? (
+          <p className="mb-3 text-[14px] text-muted">
+            {t("filteredBy", { category: categoryFilter })}{" "}
+            <Link href="/posts" className="font-semibold text-link hover:underline">
+              {t("clearFilter")}
+            </Link>
+          </p>
+        ) : null}
         {posts === null ? (
           <p role="status" className="border-s-4 border-new bg-panel px-4 py-3 text-[14px] text-text">
             {t("loadError")}
